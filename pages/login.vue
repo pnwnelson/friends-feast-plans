@@ -3,9 +3,7 @@
     <v-row>
       <v-col>
         <v-sheet width="300" class="mx-auto">
-          <div class="text-subtitle-1 mb-3">
-            Create an account to submit your Feast plans
-          </div>
+          <div class="text-subtitle-1 mb-3">Login</div>
 
           <v-form validate-on="submit" @submit.prevent="handleLogin">
             <v-text-field

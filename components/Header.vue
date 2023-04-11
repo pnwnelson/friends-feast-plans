@@ -26,10 +26,22 @@
 </template>
 
 <script setup lang="ts">
+import { signOut } from "firebase/auth";
 import { useUserStore } from "./../stores/userStore";
+
 const store = useUserStore();
+const { $auth } = useNuxtApp();
 
 function handleLogout() {
-  store.isAuthenticated = false;
+  signOut($auth)
+    .then(() => {
+      // Sign-out successful.
+      store.isAuthenticated = false;
+      navigateTo("/login");
+    })
+    .catch((error) => {
+      console.error(error);
+      // An error happened.
+    });
 }
 </script>
