@@ -1,0 +1,42 @@
+{
+  "users": {
+    "userA": {
+      "name": "User A",
+      "preteens": true,
+      "teens": true,
+      "years": {
+        "2023": {
+          "Utah St. George": true
+        },
+        "2024": {
+          "Greece": true
+        }
+      }
+    },
+    "userB": {
+      "name": "User B",
+      "preteens": true,
+      "teens": true,
+      "years": {
+        "2023": {
+          "Utah St. George": true
+        },
+        "2024": {
+          "Greece": true
+        }
+      }
+    }
+  },
+  "locations": {
+    "Utah - St. George": {
+      "years": {
+        "2023": true,
+        "2024": true
+      },
+      "users": {
+        "userA": true,
+        "userB": true
+      }
+    }
+  }
+}

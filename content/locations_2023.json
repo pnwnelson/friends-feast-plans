@@ -1,0 +1,14 @@
+[
+  { 
+    "name": "Washington",
+    "attendance": 3
+  },
+  { 
+    "name": "Montana",
+    "attendance": 2
+  },
+  { 
+    "name": "Utah - St. George",
+    "attendance": 300
+  }
+]

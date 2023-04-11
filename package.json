@@ -8,7 +8,29 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
+  "overrides": {
+    "vue": "latest"
+  },
   "devDependencies": {
     "nuxt": "^3.3.3"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.2.96",
+    "@nuxt/devtools": "^0.3.2",
+    "@nuxtjs/eslint-config-typescript": "^12.0.0",
+    "@pinia/nuxt": "^0.4.8",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.10.0",
+    "firebase": "^9.19.1",
+    "pinia": "^2.0.34",
+    "prettier": "^2.8.7",
+    "sass": "^1.61.0",
+    "vite-plugin-eslint": "^1.8.1",
+    "vuetify": "^3.1.4"
   }
 }
