@@ -14,10 +14,12 @@
             ></v-text-field>
             <v-text-field
               v-model="password"
-              type="password"
               :rules="passwordRules"
               label="Password"
               required
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="show1 ? 'text' : 'password'"
+              @click:append="show1 = !show1"
             ></v-text-field>
             <v-btn type="submit" block class="mt-2">Submit</v-btn>
           </v-form>
@@ -35,6 +37,7 @@ const store = useUserStore();
 const { $auth } = useNuxtApp();
 const { $firestore } = useNuxtApp();
 
+const show1 = ref(false);
 const valid = ref(false);
 const email = ref("");
 const password = ref("");

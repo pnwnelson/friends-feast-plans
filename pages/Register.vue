@@ -19,11 +19,17 @@
               :rules="passwordRules"
               label="Password"
               required
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="show1 ? 'text' : 'password'"
+              @click:append="show1 = !show1"
             ></v-text-field>
             <v-text-field
               v-model="password2"
               label="Password"
               required
+              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="show2 ? 'text' : 'password'"
+              @click:append="show2 = !show2"
             ></v-text-field>
             <v-btn type="submit" block class="mt-2">Submit</v-btn>
           </v-form>
@@ -43,6 +49,8 @@ import User from "./../content/user";
 const store = useUserStore();
 
 // const { registerUser } = useFirebaseAuth(); // auto-imported
+const show1 = ref(false);
+const show2 = ref(false);
 const valid = ref(false);
 const email = ref(null);
 const password1 = ref(null);

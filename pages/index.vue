@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <v-row>
+    <!-- <v-row>
       <v-col>
         <div class="text-subtitle-1 mb-3">
           Want to see where your friends are thinking of going to the Feast?
           Choose a location below to see who's going there.
         </div>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-row>
       <v-col>
         <!-- <select v-model="selected" label="Select">

@@ -22,19 +22,19 @@
               v-model="userStore.userData.firstname"
               label="First Name"
               persistent-placeholder
-              :disabled="!editingProfile"
+              readonly
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.lastname"
               label="Last Name"
               persistent-placeholder
-              :disabled="!editingProfile"
+              readonly
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.email"
               label="Email Address"
               persistent-placeholder
-              :disabled="!editingProfile"
+              readonly
             ></v-text-field>
             <v-select
               v-model="userStore.userData.location"
@@ -42,34 +42,34 @@
               item-title="name"
               return-object
               filled
-              :disabled="!editingProfile"
+              readonly
             ></v-select>
             <v-select
               v-model="userStore.userData.maritalStatus"
               label="Marital Status"
               item-title="text"
-              :disabled="!editingProfile"
+              readonly
             >
             </v-select>
             <v-select
               v-model="userStore.userData.adults"
               label="Adults"
-              :disabled="!editingProfile"
+              readonly
             ></v-select>
             <v-select
               v-model="userStore.userData.preteens"
               label="Preteens"
-              :disabled="!editingProfile"
+              readonly
             ></v-select>
             <v-select
               v-model="userStore.userData.teens"
               label="Teens"
-              :disabled="!editingProfile"
+              readonly
             ></v-select>
             <v-select
               v-model="userStore.userData.youngAdults"
               label="Young Adults"
-              :disabled="!editingProfile"
+              readonly
             ></v-select>
             <div>Total: {{ total }}</div>
             <v-btn v-if="editingProfile" type="submit" block class="mt-2"
