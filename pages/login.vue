@@ -14,6 +14,7 @@
             ></v-text-field>
             <v-text-field
               v-model="password"
+              type="password"
               :rules="passwordRules"
               label="Password"
               required
@@ -28,8 +29,11 @@
 
 <script setup lang="ts">
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { collection, query, where, getDoc, doc } from "firebase/firestore";
 import { useUserStore } from "./../stores/userStore";
 const store = useUserStore();
+const { $auth } = useNuxtApp();
+const { $firestore } = useNuxtApp();
 
 const valid = ref(false);
 const email = ref("");
@@ -49,19 +53,6 @@ const passwordRules = reactive([
   },
 ]);
 
-const { $auth } = useNuxtApp();
-
-signInWithEmailAndPassword($auth, email.value, password.value)
-  .then((userCredential) => {
-    // Signed in
-    const user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-  });
-
 async function handleLogin() {
   try {
     const { user } = await signInWithEmailAndPassword(
@@ -72,6 +63,19 @@ async function handleLogin() {
 
     console.log(user);
     store.isAuthenticated = true;
+    // Get user info from Firestore
+    const docRef = doc($firestore, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      store.userData = docSnap.data();
+      store.id = user.uid;
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+
     navigateTo("/");
   } catch (error: unknown) {
     console.error(error);

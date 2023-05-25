@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // import { defineNuxtConfig } from "nuxt";
+import eslintPlugin from "vite-plugin-eslint";
 
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -13,7 +14,13 @@ export default defineNuxtConfig({
       FB_MEASUREMENT_ID: process.env.FB_MEASUREMENT_ID,
     },
   },
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
+  typescript: {
+    // Take Over Mode handles the declaration files for us
+    shim: false,
+    strict: false,
+  },
+  ssr: false,
   css: [
     "@mdi/font/css/materialdesignicons.min.css",
     "vuetify/lib/styles/main.sass",

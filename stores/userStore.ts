@@ -1,20 +1,80 @@
 import { defineStore } from "pinia";
+import {
+  query,
+  where,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+} from "firebase/firestore";
 
-// You can name the return value of `defineStore()` anything you want,
-// but it's best to use the name of the store and surround it with `use`
-// and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
-// the first argument is a unique id of the store across your application
-export const useUserStore = defineStore("user", () => {
-  // other options...
-  const isAuthenticated = ref(false);
-  const firstname = ref();
-  const lastname = ref();
-  const email = ref();
-  const userLocation = ref();
-  const isConfirmed = ref(false);
-  const havePreteens = ref(false);
-  const haveTeens = ref(false);
-  return {
-    isAuthenticated,
-  };
-});
+export const useUserStore = defineStore(
+  "user",
+  () => {
+    // other options...
+    const id = ref(null);
+    const isAuthenticated = ref(false);
+    const locations = ref([]);
+    const userData = ref(null);
+
+    function resetTheThings() {
+      id.value = null;
+      isAuthenticated.value = false;
+      locations.value = [];
+      userData.value = null;
+    }
+
+    async function getUserData() {
+      console.log("hitting action", id);
+      const { $firestore } = useNuxtApp();
+      const store = useUserStore();
+
+      const docRef = doc($firestore, "users", id.value);
+      const docSnap = await getDoc(docRef);
+      console.log("getting here?");
+
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        userData.value = docSnap.data();
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    }
+
+    async function getLocationData() {
+      const { $firestore } = useNuxtApp();
+      const store = useUserStore();
+      const locRef = await getDocs(
+        // TODO: grab the year automatically
+        query(
+          collection($firestore, "locations"),
+          where("years.2023", "==", true)
+        )
+      );
+
+      const locArray = [];
+
+      locRef.forEach((doc) => {
+        const obj = { name: doc.id, data: doc.data() };
+        locArray.push(obj);
+        locations.value = locArray;
+      });
+    }
+
+    return {
+      id,
+      isAuthenticated,
+      locations,
+      userData,
+      resetTheThings,
+      getUserData,
+      getLocationData,
+    };
+  },
+  {
+    persist: {
+      storage: persistedState.localStorage,
+    },
+  }
+);

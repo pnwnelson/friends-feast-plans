@@ -11,6 +11,7 @@
       Login
     </v-btn>
     <v-col v-if="store.isAuthenticated" cols="auto">
+      <v-btn @click="$router.push('/profile')"> Profile </v-btn>
       <v-menu>
         <template #activator="{ props }">
           <v-btn icon="mdi-account" size="large" v-bind="props"> </v-btn>
@@ -36,7 +37,7 @@ function handleLogout() {
   signOut($auth)
     .then(() => {
       // Sign-out successful.
-      store.isAuthenticated = false;
+      store.resetTheThings();
       navigateTo("/login");
     })
     .catch((error) => {

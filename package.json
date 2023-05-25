@@ -3,20 +3,21 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --port=3002",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "clean": "npx nuxi-edge@latest cleanup"
   },
   "overrides": {
     "vue": "latest"
   },
   "devDependencies": {
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "nuxt": "^3.3.3"
   },
   "dependencies": {
     "@mdi/font": "^7.2.96",
-    "@nuxt/devtools": "^0.3.2",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@pinia/nuxt": "^0.4.8",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
@@ -27,9 +28,11 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.10.0",
     "firebase": "^9.19.1",
+    "lodash.clonedeep": "^4.5.0",
     "pinia": "^2.0.34",
     "prettier": "^2.8.7",
     "sass": "^1.61.0",
+    "uuid": "^9.0.0",
     "vite-plugin-eslint": "^1.8.1",
     "vuetify": "^3.1.4"
   }

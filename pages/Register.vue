@@ -35,6 +35,12 @@
 
 <script setup lang="ts">
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { setDoc, collection, doc, getDoc } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
+import { useUserStore } from "./../stores/userStore";
+import User from "./../content/user";
+
+const store = useUserStore();
 
 // const { registerUser } = useFirebaseAuth(); // auto-imported
 const valid = ref(false);
@@ -47,11 +53,6 @@ const emailRules = reactive([
 
     return "Name is requred.";
   },
-  (value: any) => {
-    if (value?.length <= 10) return true;
-
-    return "Name must be less than 10 characters.";
-  },
 ]);
 const passwordRules = reactive([
   (value: any) => {
@@ -60,16 +61,16 @@ const passwordRules = reactive([
     return "A password is requred.";
   },
   (value: any) => {
-    if (value === password2) return true;
+    console.log("value", value, "password2", password2.value);
+    if (value === password2.value) return true;
 
     return "Passwords do not match";
   },
 ]);
 
-const nuxtApp = useNuxtApp();
 const { $auth } = useNuxtApp();
-
-console.log($auth);
+const { $firestore } = useNuxtApp();
+const { $realtimeDB } = useNuxtApp();
 
 async function registerUser() {
   try {
@@ -80,10 +81,57 @@ async function registerUser() {
     );
 
     console.log(user);
+    store.isAuthenticated = true;
+    store.email = user.email;
+    store.id = user.uid;
+
+    createUserProfile(user);
   } catch (error: unknown) {
     if (error instanceof Error) {
       // handle error
     }
+  }
+}
+
+async function createUserProfile(user: any) {
+  const newUser = new User(user); // eventually use a class?
+  try {
+    const docRef = await doc($firestore, "users", user.uid);
+    setDoc(
+      docRef,
+      {
+        email: user.email,
+        firstname: null,
+        lastname: null,
+        location: null,
+        isSingle: false,
+        maritalStatus: null,
+        preteens: 0,
+        teens: 0,
+        youngAdults: 0,
+        adults: 0,
+        parents: 0,
+      },
+      { merge: true }
+    );
+    console.log("Document written with ID: ", docRef);
+
+    if (docRef) {
+      // get userData
+      const docRef = doc($firestore, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        store.userData = docSnap.data();
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+      }
+      navigateTo("/");
+    }
+  } catch (e) {
+    console.error("Error adding document: ", e);
   }
 }
 

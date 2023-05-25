@@ -22,12 +22,50 @@
             <tr>
               <th class="text-left">Location</th>
               <th class="text-left">Attendance</th>
+              <th class="text-left">Preteens</th>
+              <th class="text-left">Teens</th>
+              <th class="text-left">Young Adults</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(location, key) in locations" :key="location">
-              <td>{{ location.name }}</td>
-              <td>{{ location.attendance }}</td>
+            <tr
+              v-for="(location, index) in locations"
+              :key="index"
+              @click="getLocationDetail(location)"
+            >
+              <td v-if="location.name">
+                {{ location.name }}
+              </td>
+              <td>
+                {{
+                  location.data.attendees && location.data.attendees.total > 0
+                    ? location.data.attendees.total
+                    : 0
+                }}
+              </td>
+              <td>
+                {{
+                  location.data.attendees &&
+                  location.data.attendees.preteens > 0
+                    ? location.data.attendees.preteens
+                    : 0
+                }}
+              </td>
+              <td>
+                {{
+                  location.data.attendees && location.data.attendees.teens > 0
+                    ? location.data.attendees.teens
+                    : 0
+                }}
+              </td>
+              <td>
+                {{
+                  location.data.attendees &&
+                  location.data.attendees.youngAdults > 0
+                    ? location.data.attendees.youngAdults
+                    : 0
+                }}
+              </td>
             </tr>
           </tbody>
         </v-table>
@@ -37,10 +75,35 @@
 </template>
 
 <script setup lang="ts">
-import locations2023 from "@/content/locations_2023.json";
+import { ref, onMounted } from "vue";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { useUserStore } from "./../stores/userStore";
 
-const locations = locations2023;
-// const selected = ref(null);
+const userStore = useUserStore();
+
+const { $firestore } = useNuxtApp();
+const locations = reactive([]);
+
+onMounted(() => {
+  getLocations();
+});
+
+async function getLocations() {
+  const locRef = await getDocs(
+    // TODO: grab the year automatically
+    query(collection($firestore, "locations"), where("years.2023", "==", true))
+  );
+
+  locRef.forEach((doc) => {
+    const obj = { name: doc.id, data: doc.data() };
+    locations.push(obj);
+    userStore.locations = locations;
+  });
+}
+
+function getLocationDetail(location) {
+  console.log(location);
+}
 </script>
 
 <style>
