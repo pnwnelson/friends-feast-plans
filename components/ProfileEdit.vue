@@ -115,14 +115,11 @@ const maritalStatus = [
 const form = ref(null);
 
 async function submit() {
-  console.log(userStore.userData.location, propsEdit.value.userData.location);
   // Check for location change. If location changes, decrement old location counts with pinia values
-  if (userStore.userData.location !== propsEdit.value.userData.location) {
-    console.log(
-      "new location",
-      -Math.abs(propsEdit.value.userData.preteens),
-      propsEdit.value.userData.location
-    );
+  if (
+    userStore.userData.location &&
+    userStore.userData.location !== propsEdit.value.userData.location
+  ) {
     // Decrement pinia location counts in firestore
     const locRef = await doc(
       $firestore,
@@ -156,7 +153,6 @@ async function submit() {
 
     if (locRef) {
       // go get new data
-      console.log("successful loc update");
       userStore.getLocationData();
     }
   }
@@ -180,7 +176,6 @@ async function submit() {
     // go get new data
     userStore.getUserData();
   }
-  console.log(total.value);
 
   // Increment location counts
   const locRef = await doc(
@@ -200,7 +195,6 @@ async function submit() {
 
   if (locRef) {
     // go get new data
-    console.log("successful loc update");
     userStore.getLocationData();
   }
 
