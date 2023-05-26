@@ -8,7 +8,15 @@
         </div>
       </v-col>
     </v-row> -->
-    <v-row>
+    <v-row v-if="loading">
+      <v-col class="d-flex justify-center">
+        <v-progress-circular
+          indeterminate
+          model-value="20"
+        ></v-progress-circular>
+      </v-col>
+    </v-row>
+    <v-row v-if="!loading" no-gutters class="mx-0 px-0">
       <v-col>
         <!-- <select v-model="selected" label="Select">
           <option selected value="">--Please choose a location--</option>
@@ -17,14 +25,28 @@
           </option>
         </select>
         <div>{{ selected }}</div> -->
-        <v-table>
-          <thead>
+        <v-table density="compact" fixed-header>
+          <thead class="bg-blue-grey-lighten-5">
             <tr>
-              <th class="text-left">Location</th>
-              <th class="text-left">Attendance</th>
-              <th class="text-left">Preteens</th>
-              <th class="text-left">Teens</th>
-              <th class="text-left">Young Adults</th>
+              <th class="text-left">
+                <span>Location</span>
+              </th>
+              <th class="text-left">
+                <span class="d-flex d-sm-none">TA</span>
+                <span class="d-none d-sm-flex">Attendees</span>
+              </th>
+              <th class="text-left">
+                <span class="d-flex d-sm-none">PT</span>
+                <span class="d-none d-sm-flex">Pre-teens</span>
+              </th>
+              <th class="text-left">
+                <span class="d-flex d-sm-none">T</span>
+                <span class="d-none d-sm-flex">Teens</span>
+              </th>
+              <th class="text-left">
+                <span class="d-flex d-sm-none">YA</span>
+                <span class="d-none d-sm-flex">Young Adults</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -34,7 +56,8 @@
               @click="getLocationDetail(location)"
             >
               <td v-if="location.name">
-                {{ location.name }}
+                <span class="d-none d-sm-flex">{{ location.name }}</span>
+                <span class="d-flex d-sm-none">{{ location.data.abbr }}</span>
               </td>
               <td>
                 {{
@@ -83,12 +106,14 @@ const userStore = useUserStore();
 
 const { $firestore } = useNuxtApp();
 const locations = reactive([]);
+const loading = ref(false);
 
 onMounted(() => {
   getLocations();
 });
 
 async function getLocations() {
+  loading.value = true;
   const locRef = await getDocs(
     // TODO: grab the year automatically
     query(collection($firestore, "locations"), where("years.2023", "==", true))
@@ -99,6 +124,7 @@ async function getLocations() {
     locations.push(obj);
     userStore.locations = locations;
   });
+  loading.value = false;
 }
 
 function getLocationDetail(location) {

@@ -1,17 +1,33 @@
 <template>
   <v-app-bar>
-    <v-toolbar-title @click="$router.push('/')">
-      Friends Feast Plans
+    <v-toolbar-title class="pointer" @click="$router.push('/')">
+      <span class="d-none d-sm-flex">Friends Feast Plans</span>
+      <span class="d-flex d-sm-none">FFP</span>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn v-if="!store.isAuthenticated" @click="$router.push('/Register')">
+    <v-btn
+      v-if="!store.isAuthenticated"
+      class="bg-blue-grey-lighten-4 mr-2"
+      @click="$router.push('/Register')"
+    >
       Register
     </v-btn>
-    <v-btn v-if="!store.isAuthenticated" @click="$router.push('/login')">
+    <v-btn
+      v-if="!store.isAuthenticated"
+      dark
+      class="bg-blue-grey-lighten-1"
+      variant="flat"
+      @click="$router.push('/login')"
+    >
       Login
     </v-btn>
     <v-col v-if="store.isAuthenticated" cols="auto">
-      <v-btn @click="$router.push('/profile')"> Profile </v-btn>
+      <v-btn
+        class="bg-blue-grey-lighten-4 mr-2"
+        @click="$router.push('/profile')"
+      >
+        Profile
+      </v-btn>
       <v-menu>
         <template #activator="{ props }">
           <v-btn icon="mdi-account" size="large" v-bind="props"> </v-btn>
@@ -46,3 +62,9 @@ function handleLogout() {
     });
 }
 </script>
+
+<style scoped>
+.pointer {
+  cursor: pointer;
+}
+</style>

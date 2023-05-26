@@ -3,7 +3,9 @@
     <v-row>
       <v-col>
         <v-sheet width="300" class="mx-auto">
-          <div class="text-subtitle-1 mb-3">Login</div>
+          <div class="text-subtitle-1 mb-3">
+            Login to see where your friends might go.
+          </div>
 
           <v-form validate-on="submit" @submit.prevent="handleLogin">
             <v-text-field
@@ -21,7 +23,9 @@
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
             ></v-text-field>
-            <v-btn type="submit" block class="mt-2">Submit</v-btn>
+            <v-btn type="submit" block class="mt-2 bg-blue-grey-lighten-1"
+              >Submit</v-btn
+            >
           </v-form>
         </v-sheet>
       </v-col>

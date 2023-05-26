@@ -17,17 +17,17 @@
       ></v-text-field>
       <v-text-field
         v-model="propsEdit.userData.email"
-        label="Email"
+        label="Email Address"
         :placeholder="propsEdit.userData.email"
         persistent-placeholder
       ></v-text-field>
       <v-select
         v-model="propsEdit.userData.location"
-        label="Location"
+        label="Planned Feast Site"
         :items="userStore.locations"
         item-title="name"
         filled
-        :rules="[(v) => !!v || 'Location is required']"
+        :rules="[(v) => !!v || 'Planned site is required']"
       ></v-select>
       <v-select
         v-model="propsEdit.userData.maritalStatus"
@@ -56,7 +56,7 @@
         label="Young Adults"
         :items="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
       ></v-select>
-      <div>Total: {{ total }}</div>
+      <div>Total Going: {{ total }}</div>
       <v-btn type="submit" block class="mt-2">Submit</v-btn>
     </v-form>
   </div>

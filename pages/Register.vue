@@ -31,7 +31,9 @@
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
             ></v-text-field>
-            <v-btn type="submit" block class="mt-2">Submit</v-btn>
+            <v-btn type="submit" block class="mt-2 bg-blue-grey-lighten-1"
+              >Submit</v-btn
+            >
           </v-form>
         </v-sheet>
       </v-col>
