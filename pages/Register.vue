@@ -6,7 +6,14 @@
           <div class="text-subtitle-1 mb-3">
             Create an account to submit your Feast plans
           </div>
-
+          <v-alert
+            v-if="store.error"
+            color="error"
+            closable
+            :text="store.error"
+            class="mb-2"
+            @click="clearError"
+          ></v-alert>
           <v-form validate-on="submit" @submit.prevent="registerUser">
             <v-text-field
               v-model="email"
@@ -42,6 +49,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, collection, doc, getDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
@@ -71,7 +79,6 @@ const passwordRules = reactive([
     return "A password is requred.";
   },
   (value: any) => {
-    console.log("value", value, "password2", password2.value);
     if (value === password2.value) return true;
 
     return "Passwords do not match";
@@ -82,7 +89,16 @@ const { $auth } = useNuxtApp();
 const { $firestore } = useNuxtApp();
 const { $realtimeDB } = useNuxtApp();
 
+onMounted(() => {
+  store.error = null;
+});
+
+function clearError() {
+  store.error = null;
+}
+
 async function registerUser() {
+  store.error = null;
   try {
     const { user } = await createUserWithEmailAndPassword(
       $auth,
@@ -90,7 +106,6 @@ async function registerUser() {
       password1.value
     );
 
-    console.log(user);
     store.isAuthenticated = true;
     store.email = user.email;
     store.id = user.uid;
@@ -99,6 +114,7 @@ async function registerUser() {
   } catch (error: unknown) {
     if (error instanceof Error) {
       // handle error
+      store.error = error.message;
     }
   }
 }
@@ -124,7 +140,6 @@ async function createUserProfile(user: any) {
       },
       { merge: true }
     );
-    console.log("Document written with ID: ", docRef);
 
     if (docRef) {
       // get userData
@@ -132,11 +147,7 @@ async function createUserProfile(user: any) {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
         store.userData = docSnap.data();
-      } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
       }
       navigateTo("/");
     }

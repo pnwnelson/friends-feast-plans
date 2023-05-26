@@ -6,7 +6,14 @@
           <div class="text-subtitle-1 mb-3">
             Login to see where your friends might go.
           </div>
-
+          <v-alert
+            v-if="store.error"
+            color="error"
+            closable
+            :text="store.error"
+            class="mb-2"
+            @click="clearError"
+          ></v-alert>
           <v-form validate-on="submit" @submit.prevent="handleLogin">
             <v-text-field
               v-model="email"
@@ -34,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { collection, query, where, getDoc, doc } from "firebase/firestore";
 import { useUserStore } from "./../stores/userStore";
@@ -60,7 +68,16 @@ const passwordRules = reactive([
   },
 ]);
 
+onMounted(() => {
+  store.error = null;
+});
+
+function clearError() {
+  store.error = null;
+}
+
 async function handleLogin() {
+  store.error = null;
   try {
     const { user } = await signInWithEmailAndPassword(
       $auth,
@@ -68,26 +85,21 @@ async function handleLogin() {
       password.value
     );
 
-    console.log(user);
     store.isAuthenticated = true;
     // Get user info from Firestore
     const docRef = doc($firestore, "users", user.uid);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
       store.userData = docSnap.data();
       store.id = user.uid;
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
     }
 
     navigateTo("/");
   } catch (error: unknown) {
-    console.error(error);
     if (error instanceof Error) {
       // handle error
+      store.error = "Username or password was incorrect";
     }
   }
 }

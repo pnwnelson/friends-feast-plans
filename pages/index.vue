@@ -18,13 +18,17 @@
     </v-row>
     <v-row v-if="!loading" no-gutters class="mx-0 px-0">
       <v-col>
-        <!-- <select v-model="selected" label="Select">
-          <option selected value="">--Please choose a location--</option>
-          <option v-for="(item, key) in locations" :key="key" :value="item">
-            {{ item }}
-          </option>
-        </select>
-        <div>{{ selected }}</div> -->
+        <v-banner
+          sticky
+          density="compact"
+          lines="two"
+          color="bg-blue-grey-lighten-5"
+          class="d-flex d-sm-none my-4"
+        >
+          <v-banner-text>
+            TA = Total Attendees, PT = Preteens, T = Teens, YA = Young Adults
+          </v-banner-text>
+        </v-banner>
         <v-table density="compact" fixed-header>
           <thead class="bg-blue-grey-lighten-5">
             <tr>

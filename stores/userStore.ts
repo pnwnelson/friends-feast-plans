@@ -16,12 +16,14 @@ export const useUserStore = defineStore(
     const isAuthenticated = ref(false);
     const locations = ref([]);
     const userData = ref(null);
+    const error = ref(null);
 
     function resetTheThings() {
       id.value = null;
       isAuthenticated.value = false;
       locations.value = [];
       userData.value = null;
+      error.value = null;
     }
 
     async function getUserData() {
@@ -67,6 +69,7 @@ export const useUserStore = defineStore(
       isAuthenticated,
       locations,
       userData,
+      error,
       resetTheThings,
       getUserData,
       getLocationData,
