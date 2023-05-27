@@ -193,13 +193,11 @@ async function submit() {
     propsEdit.value.userData.location
   );
   updateDoc(locRef, {
-    attendees: {
-      preteens: increment(propsEdit.value.userData.preteens),
-      teens: increment(propsEdit.value.userData.teens),
-      youngAdults: increment(propsEdit.value.userData.youngAdults),
-      adults: increment(propsEdit.value.userData.adults),
-      total: increment(total.value),
-    },
+    "attendees.preteens": increment(propsEdit.value.userData.preteens),
+    "attendees.teens": increment(propsEdit.value.userData.teens),
+    "attendees.youngAdults": increment(propsEdit.value.userData.youngAdults),
+    "attendees.adults": increment(propsEdit.value.userData.adults),
+    "attendees.total": increment(total.value),
   });
 
   if (locRef) {
