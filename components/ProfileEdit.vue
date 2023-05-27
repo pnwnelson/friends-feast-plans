@@ -123,26 +123,11 @@ const maritalStatus = [
 
 const form = ref(null);
 
-async function submit() {
-  const valid = await profileForm.value.validate();
-  console.log(valid.valid);
-  if (!valid.valid) {
-    return;
-  }
+async function decrementOldLocationCounts() {
+  console.log("decrementing old location counts");
 
-  loading.value = true;
-  // Check for location change. If location changes, decrement old location counts with pinia values
-  if (
-    userStore.userData.location &&
-    userStore.userData.location !== propsEdit.value.userData.location
-  ) {
-    console.log("switching locations");
-    // Decrement pinia location counts in firestore
-    const locRef = await doc(
-      $firestore,
-      "locations",
-      userStore.userData.location
-    );
+  try {
+    const locDecRef = doc($firestore, "locations", userStore.userData.location);
     console.log(
       userStore.userData.preteens,
       userStore.userData.teens,
@@ -150,7 +135,7 @@ async function submit() {
       userStore.userData.adults
     );
 
-    updateDoc(locRef, {
+    const update: any = await updateDoc(locDecRef, {
       "attendees.preteens": increment(-Math.abs(userStore.userData.preteens)),
       "attendees.teens": increment(-Math.abs(userStore.userData.teens)),
       "attendees.youngAdults": increment(
@@ -160,55 +145,133 @@ async function submit() {
       "attendees.total": increment(-Math.abs(oldTotal.value)),
     });
 
-    if (locRef) {
-      console.log("should have decremented");
-      // go get new data
+    if (update) {
+      console.log("should have decremented old location counts", update);
+      return true;
     }
+  } catch (e) {
+    console.error("Failed to decrement old location count", e);
+    return false;
+  }
+}
+
+async function decrementSameLocationCounts() {
+  console.log("decrementing same location counts");
+
+  try {
+    const locDecRef = doc(
+      $firestore,
+      "locations",
+      propsEdit.value.userData.location
+    );
+    const update: any = await updateDoc(locDecRef, {
+      "attendees.preteens": increment(-Math.abs(userStore.userData.preteens)),
+      "attendees.teens": increment(-Math.abs(userStore.userData.teens)),
+      "attendees.youngAdults": increment(
+        -Math.abs(userStore.userData.youngAdults)
+      ),
+      "attendees.adults": increment(-Math.abs(userStore.userData.adults)),
+      "attendees.total": increment(-Math.abs(oldTotal.value)),
+    });
+
+    if (update) {
+      console.log("should have decremented same location counts", update);
+      return true;
+    }
+  } catch (e) {
+    console.error("Failed decrementing same location count", e);
+    return false;
+  }
+}
+
+async function incrementLocationCounts() {
+  console.log("incrementing location counts");
+
+  try {
+    const locIncRef = doc(
+      $firestore,
+      "locations",
+      propsEdit.value.userData.location
+    );
+    const update: any = await updateDoc(locIncRef, {
+      "attendees.preteens": increment(propsEdit.value.userData.preteens),
+      "attendees.teens": increment(propsEdit.value.userData.teens),
+      "attendees.youngAdults": increment(propsEdit.value.userData.youngAdults),
+      "attendees.adults": increment(propsEdit.value.userData.adults),
+      "attendees.total": increment(total.value),
+    });
+    if (update) {
+      console.log("should have incremented location counts", update);
+      return true;
+    }
+  } catch (e) {
+    console.error("Failed increment update", e);
+    return false;
+  }
+}
+
+async function submit() {
+  // Validate
+  const valid = await profileForm.value.validate();
+  if (!valid.valid) {
+    return;
   }
 
-  // Update users profile
-  const docRef = await doc($firestore, "users", userStore.id);
-  updateDoc(docRef, {
-    firstname: propsEdit.value.userData.firstname,
-    lastname: propsEdit.value.userData.lastname,
-    email: propsEdit.value.userData.email,
-    maritalStatus: propsEdit.value.userData.maritalStatus,
-    isSingle: propsEdit.value.userData.maritalStatus === "Single",
-    adults: propsEdit.value.userData.adults,
-    preteens: propsEdit.value.userData.preteens,
-    teens: propsEdit.value.userData.teens,
-    youngAdults: propsEdit.value.userData.youngAdults,
-    location: propsEdit.value.userData.location,
-  });
-
-  if (docRef) {
-    console.log("should have updated userData");
-    // go get new data
+  loading.value = true;
+  // If this is the initial location selection, increment
+  if (!userStore.userData.location) {
+    console.log("first time selecting location");
+    await incrementLocationCounts();
   }
 
-  // Increment location counts
-  const locRef = await doc(
-    $firestore,
-    "locations",
-    propsEdit.value.userData.location
-  );
-  updateDoc(locRef, {
-    "attendees.preteens": increment(propsEdit.value.userData.preteens),
-    "attendees.teens": increment(propsEdit.value.userData.teens),
-    "attendees.youngAdults": increment(propsEdit.value.userData.youngAdults),
-    "attendees.adults": increment(propsEdit.value.userData.adults),
-    "attendees.total": increment(total.value),
-  });
-
-  if (locRef) {
-    console.log("should have incremented");
-    // go get new data
+  // If location changes, decrement old location counts with pinia values
+  if (
+    userStore.userData.location &&
+    userStore.userData.location !== propsEdit.value.userData.location
+  ) {
+    console.log("switching locations");
+    // Decrement pinia location counts in firestore
+    await decrementOldLocationCounts();
+    setTimeout(() => {
+      incrementLocationCounts();
+    }, 2000);
   }
+
+  // If location doesn't change, decrement the same location in case the they are changing counts for the same location.
+  // Otherwise, the increment will keep adding up and not taking away.
+  if (
+    userStore.userData.location &&
+    userStore.userData.location === propsEdit.value.userData.location
+  ) {
+    // Clear the counts
+    await decrementSameLocationCounts();
+    // decrementSameLocationCounts();
+    setTimeout(() => {
+      incrementLocationCounts();
+    }, 2000);
+  }
+
+  try {
+    console.log("updating userData");
+    // Update users profile
+    const docRef = doc($firestore, "users", userStore.id);
+    const updateUser: any = await updateDoc(docRef, {
+      firstname: propsEdit.value.userData.firstname,
+      lastname: propsEdit.value.userData.lastname,
+      email: propsEdit.value.userData.email,
+      maritalStatus: propsEdit.value.userData.maritalStatus,
+      isSingle: propsEdit.value.userData.maritalStatus === "Single",
+      adults: propsEdit.value.userData.adults,
+      preteens: propsEdit.value.userData.preteens,
+      teens: propsEdit.value.userData.teens,
+      youngAdults: propsEdit.value.userData.youngAdults,
+      location: propsEdit.value.userData.location,
+    });
+  } catch (e) {
+    console.error("Failed to update userData", e);
+  }
+
   await userStore.getUserData();
-  // await userStore.getLocationData();
-
-  // If no location change, change counts to location
-  // Update firestore
 
   emit("submitted", true);
   loading.value = false;
