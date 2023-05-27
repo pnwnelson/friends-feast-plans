@@ -1,8 +1,8 @@
 <template>
   <v-app-bar>
-    <v-toolbar-title class="pointer" @click="$router.push('/')">
-      <span class="d-none d-sm-flex">Friends Feast Plans</span>
-      <span class="d-flex d-sm-none">FFP</span>
+    <v-toolbar-title @click="$router.push('/')">
+      <v-btn class="d-none d-sm-flex">Friends Feast Plans</v-btn>
+      <v-btn class="d-flex d-sm-none">FFP</v-btn>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn
@@ -62,9 +62,3 @@ function handleLogout() {
     });
 }
 </script>
-
-<style scoped>
-.pointer {
-  cursor: pointer;
-}
-</style>

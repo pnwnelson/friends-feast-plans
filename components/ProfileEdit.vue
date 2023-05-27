@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-form ref="form" validate-on="submit" @submit.prevent="submit">
+    <v-form ref="profileForm" validate-on="submit" @submit.prevent="submit">
       <v-text-field
         v-model="propsEdit.userData.firstname"
         label="First Name"
@@ -57,7 +57,14 @@
         :items="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
       ></v-select>
       <div>Total Going: {{ total }}</div>
-      <v-btn type="submit" block class="mt-2">Submit</v-btn>
+      <v-btn type="submit" block class="mt-2">
+        <span v-if="!loading">Submit</span>
+        <v-progress-circular
+          v-if="loading"
+          indeterminate
+          model-value="20"
+        ></v-progress-circular>
+      </v-btn>
     </v-form>
   </div>
 </template>
@@ -77,6 +84,8 @@ const props = defineProps<{
 }>();
 
 const propsEdit = ref(cloneDeep(props));
+const loading = ref(false);
+const profileForm = ref(null);
 
 // const rules = {
 //   select: [(v) => !!v || "Location is required"],
@@ -115,16 +124,30 @@ const maritalStatus = [
 const form = ref(null);
 
 async function submit() {
+  const valid = await profileForm.value.validate();
+  console.log(valid.valid);
+  if (!valid.valid) {
+    return;
+  }
+
+  loading.value = true;
   // Check for location change. If location changes, decrement old location counts with pinia values
   if (
     userStore.userData.location &&
     userStore.userData.location !== propsEdit.value.userData.location
   ) {
+    console.log("switching locations");
     // Decrement pinia location counts in firestore
     const locRef = await doc(
       $firestore,
       "locations",
       userStore.userData.location
+    );
+    console.log(
+      userStore.userData.preteens,
+      userStore.userData.teens,
+      userStore.userData.youngAdults,
+      userStore.userData.adults
     );
 
     updateDoc(locRef, {
@@ -137,23 +160,9 @@ async function submit() {
       "attendees.total": increment(-Math.abs(oldTotal.value)),
     });
 
-    // $firestore
-    //   .collection()
-    //   .doc()
-    //   .update({
-    //     attendees: {
-    //       preteens: increment(-Math.abs(propsEdit.value.userData.preteens)),
-    //       teens: increment(-Math.abs(propsEdit.value.userData.teens)),
-    //       youngAdults: increment(
-    //         -Math.abs(propsEdit.value.userData.youngAdults)
-    //       ),
-    //       adults: increment(-Math.abs(propsEdit.value.userData.adults)),
-    //     },
-    //   });
-
     if (locRef) {
+      console.log("should have decremented");
       // go get new data
-      userStore.getLocationData();
     }
   }
 
@@ -173,8 +182,8 @@ async function submit() {
   });
 
   if (docRef) {
+    console.log("should have updated userData");
     // go get new data
-    userStore.getUserData();
   }
 
   // Increment location counts
@@ -194,13 +203,16 @@ async function submit() {
   });
 
   if (locRef) {
+    console.log("should have incremented");
     // go get new data
-    userStore.getLocationData();
   }
+  await userStore.getUserData();
+  // await userStore.getLocationData();
 
   // If no location change, change counts to location
   // Update firestore
 
   emit("submitted", true);
+  loading.value = false;
 }
 </script>

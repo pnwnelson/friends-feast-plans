@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container :class="{ 'w-50': $vuetify.display.md }">
     <v-row>
       <v-col>
         <h2>Profile</h2>
@@ -23,65 +23,64 @@
             <v-text-field
               v-model="userStore.userData.firstname"
               label="First Name"
-              persistent-placeholder
-              readonly
-              variant="solo"
+              disabled
+              variant="outlined"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.lastname"
               label="Last Name"
-              persistent-placeholder
-              readonly
-              variant="solo"
+              disabled
+              variant="outlined"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.email"
               label="Email Address"
-              persistent-placeholder
-              readonly
-              variant="solo"
+              disabled
+              variant="outlined"
             ></v-text-field>
-            <v-select
+            <v-text-field
               v-model="userStore.userData.location"
               label="Planned Feast Site"
-              item-title="name"
-              return-object
-              filled
-              readonly
-              variant="solo"
-            ></v-select>
-            <v-select
+              persistent-placeholder
+              disabled
+              variant="outlined"
+            ></v-text-field>
+            <v-text-field
               v-model="userStore.userData.maritalStatus"
               label="Marital Status"
-              item-title="text"
-              readonly
-              variant="solo"
+              persistent-placeholder
+              disabled
+              variant="outlined"
             >
-            </v-select>
-            <v-select
+            </v-text-field>
+            <v-text-field
               v-model="userStore.userData.adults"
               label="Adults"
-              readonly
-              variant="solo"
-            ></v-select>
-            <v-select
+              persistent-placeholder
+              disabled
+              variant="outlined"
+            ></v-text-field>
+            <v-text-field
               v-model="userStore.userData.preteens"
               label="Preteens"
-              readonly
-              variant="solo"
-            ></v-select>
-            <v-select
+              persistent-placeholder
+              disabled
+              variant="outlined"
+            ></v-text-field>
+            <v-text-field
               v-model="userStore.userData.teens"
               label="Teens"
-              readonly
-              variant="solo"
-            ></v-select>
-            <v-select
+              persistent-placeholder
+              disabled
+              variant="outlined"
+            ></v-text-field>
+            <v-text-field
               v-model="userStore.userData.youngAdults"
               label="Young Adults"
-              readonly
-              variant="solo"
-            ></v-select>
+              persistent-placeholder
+              disabled
+              variant="outlined"
+            ></v-text-field>
             <div>Total: {{ total }}</div>
             <v-btn v-if="editingProfile" type="submit" block class="mt-2"
               >Submit</v-btn
@@ -109,6 +108,10 @@ const total = computed(() => {
     userStore.userData.teens +
     userStore.userData.youngAdults
   );
+});
+
+onMounted(() => {
+  userStore.getUserData();
 });
 
 function onSubmit() {
