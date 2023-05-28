@@ -44,6 +44,7 @@
     <v-row>
       <v-col>
         <h3>Familes Going</h3>
+        <div v-if="!families.length">None yet</div>
         <div v-for="family in families" :key="family.emal">
           <div>{{ family.firstname }} {{ family.lastname }}</div>
         </div>

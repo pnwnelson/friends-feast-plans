@@ -32,7 +32,7 @@
       <v-select
         v-model="propsEdit.userData.maritalStatus"
         label="Marital Status"
-        :items="maritalStatus"
+        :items="['Single', 'Married']"
         item-title="status"
       >
       </v-select>
@@ -126,6 +126,9 @@ const form = ref(null);
 async function decrementOldLocationCounts() {
   console.log("decrementing old location counts");
 
+  const singleCount = userStore.userData.maritalStatus === "Single" ? 1 : 0;
+  console.log(singleCount);
+
   try {
     const locDecRef = doc($firestore, "locations", userStore.userData.location);
     console.log(
@@ -142,6 +145,8 @@ async function decrementOldLocationCounts() {
         -Math.abs(userStore.userData.youngAdults)
       ),
       "attendees.adults": increment(-Math.abs(userStore.userData.adults)),
+      "attendees.singles": increment(-Math.abs(singleCount)),
+
       "attendees.total": increment(-Math.abs(oldTotal.value)),
     });
 
@@ -158,6 +163,9 @@ async function decrementOldLocationCounts() {
 async function decrementSameLocationCounts() {
   console.log("decrementing same location counts");
 
+  const singleCount = userStore.userData.maritalStatus === "Single" ? 1 : 0;
+  console.log(singleCount);
+
   try {
     const locDecRef = doc(
       $firestore,
@@ -171,6 +179,8 @@ async function decrementSameLocationCounts() {
         -Math.abs(userStore.userData.youngAdults)
       ),
       "attendees.adults": increment(-Math.abs(userStore.userData.adults)),
+      "attendees.singles": increment(-Math.abs(singleCount)),
+
       "attendees.total": increment(-Math.abs(oldTotal.value)),
     });
 
@@ -187,6 +197,10 @@ async function decrementSameLocationCounts() {
 async function incrementLocationCounts() {
   console.log("incrementing location counts");
 
+  const singleCount =
+    propsEdit.value.userData.maritalStatus === "Single" ? 1 : 0;
+  console.log(singleCount);
+
   try {
     const locIncRef = doc(
       $firestore,
@@ -198,6 +212,7 @@ async function incrementLocationCounts() {
       "attendees.teens": increment(propsEdit.value.userData.teens),
       "attendees.youngAdults": increment(propsEdit.value.userData.youngAdults),
       "attendees.adults": increment(propsEdit.value.userData.adults),
+      "attendees.singles": increment(singleCount),
       "attendees.total": increment(total.value),
     });
     if (update) {
