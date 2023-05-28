@@ -3,7 +3,7 @@
     <Header />
     <v-main>
       <v-container>
-        <RouterView />
+        <NuxtPage></NuxtPage>
       </v-container>
     </v-main>
   </v-app>

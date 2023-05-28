@@ -54,14 +54,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(location, index) in locations"
-              :key="index"
-              @click="getLocationDetail(location)"
-            >
+            <tr v-for="(location, index) in locations" :key="index">
               <td v-if="location.name">
-                <span class="d-none d-sm-flex">{{ location.name }}</span>
-                <span class="d-flex d-sm-none">{{ location.data.abbr }}</span>
+                <nuxt-link :to="getLocationDetail(location)">
+                  <span class="d-none d-sm-flex">{{ location.name }}</span>
+                  <span class="d-flex d-sm-none">{{ location.data.abbr }}</span>
+                </nuxt-link>
               </td>
               <td>
                 {{
@@ -111,6 +109,7 @@ const userStore = useUserStore();
 const { $firestore } = useNuxtApp();
 const locations = reactive([]);
 const loading = ref(false);
+const locPath = ref(null);
 
 onMounted(() => {
   getLocations();
@@ -132,7 +131,7 @@ async function getLocations() {
 }
 
 function getLocationDetail(location) {
-  console.log(location);
+  return `/location/${location.data.path}`;
 }
 </script>
 
