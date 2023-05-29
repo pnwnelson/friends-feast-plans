@@ -7,10 +7,22 @@
       <v-spacer></v-spacer>
       <v-col class="text-right">
         <v-btn
-          class="bg-blue-grey-lighten-4 mr-2"
+          class="bg-blue-grey-lighten-5 mr-2"
           @click="editingProfile = !editingProfile"
-          >{{ !editingProfile ? "EdIT" : "CANCEL" }}</v-btn
+          >{{ !editingProfile ? "EDIT" : "CANCEL" }}</v-btn
         >
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <p class="text-caption">
+          Editing this form will update your selected planned Feast site's
+          attendance count in this app. Please tell us how many adults,
+          preteens, teens and young adults that will be traveling with you. If
+          someone who is traveling with you already submitted their own form (or
+          plans to), please do not include them. Remember to update your profile
+          if your plans change!
+        </p>
       </v-col>
     </v-row>
     <v-row>

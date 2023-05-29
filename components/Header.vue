@@ -1,16 +1,17 @@
 <template>
   <v-app-bar>
-    <v-toolbar-title @click="$router.push('/')">
+    <v-toolbar-title class="w-100" @click="$router.push('/')">
       <v-btn class="d-none d-sm-flex">Friends Feast Plans</v-btn>
-      <v-btn class="d-flex d-sm-none">FFP</v-btn>
+      <v-btn class="d-flex d-sm-none text-button"
+        >Friends <br />Feast Plans</v-btn
+      >
     </v-toolbar-title>
-    <v-spacer></v-spacer>
     <v-btn
       v-if="!store.isAuthenticated"
       class="bg-blue-grey-lighten-4 mr-2"
       @click="$router.push('/Register')"
     >
-      Register
+      Sign Up
     </v-btn>
     <v-btn
       v-if="!store.isAuthenticated"

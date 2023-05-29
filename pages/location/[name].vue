@@ -1,52 +1,85 @@
 <template>
-  <v-container>
+  <v-container :class="{ 'w-50': $vuetify.display.md }">
     <v-row>
       <v-btn class="ma-2" variant="text" @click="$router.push('/')">
         <v-icon start icon="mdi-arrow-left"></v-icon>Back
       </v-btn>
     </v-row>
     <v-row>
-      <v-col
-        ><h1>
+      <v-col>
+        <h2>
           {{ location.name }}
-        </h1>
-        <div v-if="location.name" class="d-flex flex-column justify-start">
-          <v-chip class="ma-2 pa-2"
-            >Preteens: {{ location.data.attendees.preteens }}
-          </v-chip>
-          <v-chip class="ma-2 pa-2"
-            >Teens: {{ location.data.attendees.teens }}
-          </v-chip>
-          <v-chip class="ma-2 pa-2"
-            >Young Adults: {{ location.data.attendees.youngAdults }}
-          </v-chip>
-          <v-chip class="ma-2 pa-2"
-            >Singles: {{ location.data.attendees.singles }}
-          </v-chip>
-          <v-chip class="ma-2 pa-2"
-            >Total: {{ location.data.attendees.total }}
-          </v-chip>
+        </h2>
+        <v-row>
+          <v-col cols="6">
+            <div v-if="location.name" class="d-flex flex-column w-100">
+              <v-chip class="my-2 pa-2">
+                <span class="mr-1">Preteens:</span>
+                <span class="font-weight-bold">
+                  {{ location.data.attendees.preteens }}</span
+                >
+              </v-chip>
+              <v-chip class="my-2 pa-2">
+                <span class="mr-1">Teens:</span>
+                <span class="font-weight-bold">
+                  {{ location.data.attendees.teens }}</span
+                >
+              </v-chip>
+              <v-chip class="my-2 pa-2">
+                <span class="mr-1">Young Adults:</span>
+                <span class="font-weight-bold">
+                  {{ location.data.attendees.youngAdults }}</span
+                >
+              </v-chip>
+              <v-chip class="my-2 pa-2">
+                <span class="mr-1">Singles:</span>
+                <span class="font-weight-bold">
+                  {{ location.data.attendees.singles }}</span
+                >
+              </v-chip>
+              <v-chip class="my-2 pa-2">
+                Total: {{ location.data.attendees.total }}
+              </v-chip>
+            </div>
+          </v-col>
+          <v-col cols="6">
+            <div>Groups (coming soon)</div>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+    <!-- Browse and Search Attendees -->
+    <v-row>
+      <v-col>
+        <h4 class="mb-2">Browse and Search Attendees</h4>
+        <div v-if="userStore.userData && userStore.userData.location">
+          <h5 class="mb-2">Search (coming soon)</h5>
+          <div class="d-flex flex-column justify-start">
+            <v-form action="">
+              <v-text-field
+                variant="outlined"
+                disabled
+                placeholder="Enter name"
+              ></v-text-field>
+            </v-form>
+          </div>
+          <div>
+            <div v-if="!families.length">None yet</div>
+            <div v-for="family in families" :key="family.emal">
+              <div>{{ family.firstname }} {{ family.lastname }}</div>
+            </div>
+          </div>
         </div>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <h3>Search Families (coming soon)</h3>
-        <v-form action="">
-          <v-text-field
-            variant="outlined"
-            disabled
-            placeholder="Enter name"
-          ></v-text-field>
-        </v-form>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <h3>Familes Going</h3>
-        <div v-if="!families.length">None yet</div>
-        <div v-for="family in families" :key="family.emal">
-          <div>{{ family.firstname }} {{ family.lastname }}</div>
+        <div v-else class="pa-3 bg-blue-grey-lighten-5">
+          <p>
+            In order to see which families are currently planning to attend this
+            location, please
+            <nuxt-link to="/login" class="text-decoration-none"
+              >login</nuxt-link
+            >
+            and submit where you plan to attend. This app is helpful only if
+            everyone participates! Thank you!
+          </p>
         </div>
       </v-col>
     </v-row>
@@ -98,7 +131,9 @@ async function getLocationDetails() {
   });
   loading.value = false;
 
-  getFamilies();
+  if (userStore.userData && userStore.userData.location) {
+    getFamilies();
+  }
 }
 
 async function getFamilies() {

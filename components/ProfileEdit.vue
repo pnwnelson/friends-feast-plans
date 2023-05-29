@@ -27,6 +27,7 @@
         :items="userStore.locations"
         item-title="name"
         filled
+        hint="Choose the site that you currently plan on attending"
         :rules="[(v) => !!v || 'Planned site is required']"
       ></v-select>
       <v-select
@@ -57,7 +58,7 @@
         :items="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
       ></v-select>
       <div>Total Going: {{ total }}</div>
-      <v-btn type="submit" block class="mt-2">
+      <v-btn type="submit" block class="mt-2 bg-blue-grey-lighten-4">
         <span v-if="!loading">Submit</span>
         <v-progress-circular
           v-if="loading"
