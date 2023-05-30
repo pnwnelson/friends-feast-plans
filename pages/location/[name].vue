@@ -65,8 +65,19 @@
           </div>
           <div>
             <div v-if="!families.length">None yet</div>
+            <div>
+              <v-icon size="small" color="green" icon="mdi-home"></v-icon>
+              <span class="text-caption"> - Housing is booked</span>
+            </div>
             <div v-for="family in families" :key="family.emal">
-              <div>{{ family.firstname }} {{ family.lastname }}</div>
+              <div class="d-flex flex-row align-center">
+                <span>{{ family.firstname }} {{ family.lastname }}</span>
+                <span
+                  v-if="family.locationStatus === 'Housing booked'"
+                  class="ml-1"
+                  ><v-icon size="small" color="green" icon="mdi-home"></v-icon
+                ></span>
+              </div>
             </div>
           </div>
         </div>

@@ -65,6 +65,13 @@
               variant="outlined"
               density="compact"
             ></v-text-field>
+            <v-select
+              v-model="userStore.userData.locationStatus"
+              label="How solid are your plans?"
+              density="compact"
+              variant="outlined"
+              disabled
+            ></v-select>
             <v-text-field
               v-model="userStore.userData.maritalStatus"
               label="Marital Status"
@@ -74,6 +81,9 @@
               density="compact"
             >
             </v-text-field>
+            <p class="pa-2 text-caption text-medium-emphasis">
+              How many of each in your group will be attending?
+            </p>
             <v-text-field
               v-model="userStore.userData.adults"
               label="Adults (Ages 35+)"

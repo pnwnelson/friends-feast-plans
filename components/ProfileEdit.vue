@@ -7,7 +7,6 @@
         :placeholder="propsEdit.userData.firstname"
         persistent-placeholder
         density="compact"
-        :rules="rules"
       ></v-text-field>
       <v-text-field
         v-model="propsEdit.userData.lastname"
@@ -23,6 +22,7 @@
         :placeholder="propsEdit.userData.email"
         density="compact"
         persistent-placeholder
+        disabled
       ></v-text-field>
       <v-select
         v-model="propsEdit.userData.location"
@@ -35,6 +35,12 @@
         :rules="[(v) => !!v || 'Planned site is required']"
       ></v-select>
       <v-select
+        v-model="propsEdit.userData.locationStatus"
+        label="How solid are your plans?"
+        :items="['No housing booked', 'Housing booked']"
+        density="compact"
+      ></v-select>
+      <v-select
         v-model="propsEdit.userData.maritalStatus"
         label="Marital Status"
         :items="['Single (Age 35+)', 'Married']"
@@ -42,6 +48,9 @@
         density="compact"
       >
       </v-select>
+      <p class="pa-2 text-caption text-medium-emphasis">
+        How many of each in your group will be attending?
+      </p>
       <v-select
         v-model="propsEdit.userData.adults"
         label="Adults (Ages 35+)"
@@ -270,6 +279,7 @@ async function submit() {
       teens: propsEdit.value.userData.teens,
       youngAdults: propsEdit.value.userData.youngAdults,
       location: propsEdit.value.userData.location,
+      locationStatus: propsEdit.value.userData.locationStatus,
     });
   } catch (e) {
     console.error("Failed to update userData", e);

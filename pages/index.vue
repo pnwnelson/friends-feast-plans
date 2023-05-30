@@ -6,7 +6,7 @@
           v-if="!dismissBannerCookie"
           sticky
           density="compact"
-          class="bg-blue-grey-lighten-1"
+          class="bg-blue-grey-lighten-1 mb-2"
         >
           <template #actions>
             <v-btn @click="dismissBanner">Dismiss</v-btn>
@@ -43,6 +43,7 @@
         </v-banner>
         <!-- sortable table -->
         <v-data-table
+          v-if="userStore.userData && userStore.userData.location"
           v-model:items-per-page="itemsPerPage"
           :headers="isMobile ? mobileHeaders : headers"
           :items="locations"
@@ -52,8 +53,16 @@
           :class="{ mobile: isMobile }"
           @click:row="getLocationDetail"
         ></v-data-table>
-        <!-- plain table -->
-        <!-- <v-table density="compact" fixed-header>
+        <!-- plain table preview -->
+        <v-table
+          v-if="
+            !userStore.isAuthenticated ||
+            (userStore.userData && !userStore.userData.location)
+          "
+          id="overlay"
+          density="compact"
+          fixed-header
+        >
           <thead>
             <tr class="bg-blue-grey-lighten-4">
               <th class="text-left bg-blue-grey-lighten-4">
@@ -85,8 +94,8 @@
             <tr v-for="(location, index) in locations" :key="index">
               <td v-if="location.name">
                 <nuxt-link
-                  :to="getLocationDetail(location)"
-                  class="text-decoration-none"
+                  class="text-decoration-none pointer"
+                  @click="getLocationDetailPreview()"
                 >
                   <span class="d-none d-sm-flex">{{ location.name }}</span>
                   <span class="d-flex d-sm-none">{{ location.data.abbr }}</span>
@@ -131,15 +140,48 @@
               </td>
             </tr>
           </tbody>
-        </v-table> -->
+        </v-table>
+        <div class="d-flex justify-center px-5">
+          <v-card-text>
+            Want to see more Feast sites? Please
+            <nuxt-link class="text-decoration-none" to="/login"
+              >login</nuxt-link
+            >
+            or
+            <nuxt-link class="text-decoration-none" to="/Register"
+              >create an account</nuxt-link
+            >
+            and let us know where you plan to attend by updating your profile!
+          </v-card-text>
+        </div>
       </v-col>
+      <v-dialog v-model="dialog" width="auto">
+        <v-card>
+          <v-card-text>
+            Want to see more Feast sites? Please
+            <nuxt-link class="text-decoration-none" to="/login"
+              >login</nuxt-link
+            >
+            or
+            <nuxt-link class="text-decoration-none" to="/Register"
+              >create an account</nuxt-link
+            >
+            and let us know where you plan to attend!
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" block @click="dialog = false"
+              >Close Dialog</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-row>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, limit } from "firebase/firestore";
 import { VDataTable } from "vuetify/labs/VDataTable";
 import { useUserStore } from "./../stores/userStore";
 
@@ -152,6 +194,8 @@ const locPath = ref(null);
 // const showBanner = ref(true);
 const dismissBannerCookie = useCookie("bannerDismiss");
 const isMobile = ref(false);
+const locationQuery = ref(null);
+const dialog = ref(false);
 
 const itemsPerPage = -1;
 const headers = [
@@ -194,9 +238,24 @@ function dismissBanner() {
 
 async function getLocations() {
   loading.value = true;
+  if (!userStore.userData || !userStore.userData.location) {
+    console.log("shoul be limiting");
+    locationQuery.value = query(
+      collection($firestore, "locations"),
+      where("years.2023", "==", true),
+      limit(6)
+    );
+  } else {
+    console.log("all locs");
+    locationQuery.value = query(
+      collection($firestore, "locations"),
+      where("years.2023", "==", true)
+    );
+  }
+  console.log(locationQuery.value);
   const locRef = await getDocs(
     // TODO: grab the year automatically
-    query(collection($firestore, "locations"), where("years.2023", "==", true))
+    locationQuery.value
   );
 
   locRef.forEach((doc) => {
@@ -209,6 +268,11 @@ async function getLocations() {
 
 function getLocationDetail(location, data) {
   return navigateTo(`/location/${data.item.props.title.data.path}`);
+}
+
+function getLocationDetailPreview() {
+  // show alert
+  dialog.value = true;
 }
 
 function onResize() {
@@ -249,5 +313,45 @@ select {
   width: 50%;
   height: 40px;
   font-weight: bold;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+#overlay {
+  position: relative;
+}
+
+#overlay::before {
+  background-image: linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  background-image: -moz-linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  background-image: -ms-linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  background-image: -o-linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  background-image: -webkit-linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  content: "\00a0";
+  height: 100%;
+  position: absolute;
+  width: 100%;
 }
 </style>
