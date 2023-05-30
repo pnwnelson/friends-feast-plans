@@ -33,28 +33,28 @@
       <v-select
         v-model="propsEdit.userData.maritalStatus"
         label="Marital Status"
-        :items="['Single', 'Married']"
+        :items="['Single (Age 35+)', 'Married']"
         item-title="status"
       >
       </v-select>
       <v-select
         v-model="propsEdit.userData.adults"
-        label="Adults"
-        :items="[0, 1, 2]"
+        label="Adults (Ages 35+)"
+        :items="[0, 1, 2, 3, 4, 5, 6, 7]"
       ></v-select>
       <v-select
         v-model="propsEdit.userData.preteens"
-        label="Preteens"
+        label="Preteens (Ages 0.01-11)"
         :items="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
       ></v-select>
       <v-select
         v-model="propsEdit.userData.teens"
-        label="Teens"
+        label="Teens (Ages 12-18)"
         :items="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
       ></v-select>
       <v-select
         v-model="propsEdit.userData.youngAdults"
-        label="Young Adults"
+        label="Young Adults (Ages 19-34)"
         :items="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
       ></v-select>
       <div>Total Going: {{ total }}</div>

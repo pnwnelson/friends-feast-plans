@@ -2,8 +2,8 @@
   <v-container>
     <v-row>
       <v-col>
-        <v-sheet width="300" class="mx-auto">
-          <div class="text-subtitle-1 mb-3">
+        <v-sheet v-if="!showResetPassword" width="300" class="mx-auto">
+          <div sclass="text-subtitle-1 mb-3">
             Login to see where your friends might go.
           </div>
           <v-alert
@@ -30,11 +30,51 @@
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
             ></v-text-field>
-            <v-btn type="submit" block class="mt-2 bg-blue-grey-lighten-1"
+            <nuxt-link class="mtt-4 text-caption" @click="toggleResetPassword"
+              >Forgot Password?</nuxt-link
+            >
+
+            <v-btn type="submit" block class="mt-3 bg-blue-grey-lighten-1"
               >Submit</v-btn
             >
           </v-form>
         </v-sheet>
+        <v-sheet v-if="showResetPassword" width="300" class="mx-auto">
+          <div class="text-subtitle-1 mb-3">
+            Enter your email address and you should recieve an email to reset
+            your password
+          </div>
+          <v-form validate-on="submit" @submit.prevent="handleResetPassword">
+            <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              label="E-mail"
+              required
+            ></v-text-field>
+            <v-btn type="submit" block class="mt-3 bg-blue-grey-lighten-1"
+              >Submit</v-btn
+            >
+            <v-btn
+              block
+              class="mt-3 bg-blue-grey-lighten-5"
+              @click="handleCancel"
+              >Cancel</v-btn
+            >
+          </v-form>
+        </v-sheet>
+        <v-snackbar
+          v-model="snackbar"
+          :timeout="snackbarTimeout"
+          color="primary"
+        >
+          An password reset email has been sent to your inbox.
+
+          <template #actions>
+            <v-btn color="white" variant="text" @click="snackbar = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
       </v-col>
     </v-row>
   </v-container>
@@ -42,7 +82,11 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { collection, query, where, getDoc, doc } from "firebase/firestore";
 import { useUserStore } from "./../stores/userStore";
 const store = useUserStore();
@@ -53,6 +97,9 @@ const show1 = ref(false);
 const valid = ref(false);
 const email = ref("");
 const password = ref("");
+const snackbar = ref(false);
+const snackbarTimeout = ref(5000);
+const showResetPassword = ref(false);
 const emailRules = reactive([
   (value: any) => {
     if (value) return true;
@@ -70,6 +117,7 @@ const passwordRules = reactive([
 
 onMounted(() => {
   store.error = null;
+  showResetPassword.value = false;
 });
 
 function clearError() {
@@ -102,5 +150,28 @@ async function handleLogin() {
       store.error = "Username or password was incorrect";
     }
   }
+}
+
+function toggleResetPassword() {
+  showResetPassword.value = true;
+}
+
+async function handleResetPassword() {
+  // const auth = getAuth();
+  await sendPasswordResetEmail($auth, email.value)
+    .then(() => {
+      // Password reset email sent!
+      snackbar.value = true;
+      showResetPassword.value = false;
+    })
+    .catch((error) => {
+      // store.error = error.code;
+      store.error = error.message;
+      // ..
+    });
+}
+
+function handleCancel() {
+  showResetPassword.value = false;
 }
 </script>

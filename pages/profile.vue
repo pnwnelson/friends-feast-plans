@@ -67,28 +67,28 @@
             </v-text-field>
             <v-text-field
               v-model="userStore.userData.adults"
-              label="Adults"
+              label="Adults (Ages 35+)"
               persistent-placeholder
               disabled
               variant="outlined"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.preteens"
-              label="Preteens"
+              label="Preteens (Ages 0.01-11)"
               persistent-placeholder
               disabled
               variant="outlined"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.teens"
-              label="Teens"
+              label="Teens (Ages 12-18)"
               persistent-placeholder
               disabled
               variant="outlined"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.youngAdults"
-              label="Young Adults"
+              label="Young Adults (Ages 19-34)"
               persistent-placeholder
               disabled
               variant="outlined"
