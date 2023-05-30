@@ -141,7 +141,10 @@
             </tr>
           </tbody>
         </v-table>
-        <div class="d-flex justify-center px-5">
+        <div
+          v-if="!userStore.userData || !userStore.userData.location"
+          class="d-flex justify-center px-5"
+        >
           <v-card-text>
             Want to see more Feast sites? Please
             <nuxt-link class="text-decoration-none" to="/login"

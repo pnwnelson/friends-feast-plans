@@ -2,6 +2,14 @@
   <div>
     <v-form ref="profileForm" validate-on="submit" @submit.prevent="submit">
       <v-text-field
+        v-model="propsEdit.userData.email"
+        label="Email Address"
+        :placeholder="propsEdit.userData.email"
+        density="compact"
+        persistent-placeholder
+        disabled
+      ></v-text-field>
+      <v-text-field
         v-model="propsEdit.userData.firstname"
         label="First Name"
         :placeholder="propsEdit.userData.firstname"
@@ -16,14 +24,9 @@
         density="compact"
         :rules="rules"
       ></v-text-field>
-      <v-text-field
-        v-model="propsEdit.userData.email"
-        label="Email Address"
-        :placeholder="propsEdit.userData.email"
-        density="compact"
-        persistent-placeholder
-        disabled
-      ></v-text-field>
+      <p class="pt-1 text-caption text-medium-emphasis">
+        Select a site so you can see the full list on the home page
+      </p>
       <v-select
         v-model="propsEdit.userData.location"
         label="Planned Feast Site"

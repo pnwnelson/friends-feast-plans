@@ -37,6 +37,13 @@
         <div v-if="!editingProfile">
           <v-form ref="form">
             <v-text-field
+              v-model="userStore.userData.email"
+              label="Email Address"
+              disabled
+              variant="outlined"
+              density="compact"
+            ></v-text-field>
+            <v-text-field
               v-model="userStore.userData.firstname"
               label="First Name"
               disabled
@@ -50,13 +57,9 @@
               variant="outlined"
               density="compact"
             ></v-text-field>
-            <v-text-field
-              v-model="userStore.userData.email"
-              label="Email Address"
-              disabled
-              variant="outlined"
-              density="compact"
-            ></v-text-field>
+            <p class="py-1 text-caption text-disabled">
+              Select a site so you can see the full list on the home page
+            </p>
             <v-text-field
               v-model="userStore.userData.location"
               label="Planned Feast Site"
