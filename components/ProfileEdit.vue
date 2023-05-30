@@ -6,6 +6,7 @@
         label="First Name"
         :placeholder="propsEdit.userData.firstname"
         persistent-placeholder
+        density="compact"
         :rules="rules"
       ></v-text-field>
       <v-text-field
@@ -13,12 +14,14 @@
         label="Last Name"
         :placeholder="propsEdit.userData.lastname"
         persistent-placeholder
+        density="compact"
         :rules="rules"
       ></v-text-field>
       <v-text-field
         v-model="propsEdit.userData.email"
         label="Email Address"
         :placeholder="propsEdit.userData.email"
+        density="compact"
         persistent-placeholder
       ></v-text-field>
       <v-select
@@ -28,6 +31,7 @@
         item-title="name"
         filled
         hint="Choose the site that you currently plan on attending"
+        density="compact"
         :rules="[(v) => !!v || 'Planned site is required']"
       ></v-select>
       <v-select
@@ -35,31 +39,36 @@
         label="Marital Status"
         :items="['Single (Age 35+)', 'Married']"
         item-title="status"
+        density="compact"
       >
       </v-select>
       <v-select
         v-model="propsEdit.userData.adults"
         label="Adults (Ages 35+)"
         :items="[0, 1, 2, 3, 4, 5, 6, 7]"
+        density="compact"
       ></v-select>
       <v-select
         v-model="propsEdit.userData.preteens"
         label="Preteens (Ages 0.01-11)"
         :items="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+        density="compact"
       ></v-select>
       <v-select
         v-model="propsEdit.userData.teens"
         label="Teens (Ages 12-18)"
         :items="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+        density="compact"
       ></v-select>
       <v-select
         v-model="propsEdit.userData.youngAdults"
         label="Young Adults (Ages 19-34)"
         :items="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+        density="compact"
       ></v-select>
       <div>Total Going: {{ total }}</div>
-      <v-btn type="submit" block class="mt-2 bg-blue-grey-lighten-4">
-        <span v-if="!loading">Submit</span>
+      <v-btn type="submit" block class="mt-2 mb-4 bg-blue-grey-lighten-4">
+        <span v-if="!loading">Save</span>
         <v-progress-circular
           v-if="loading"
           indeterminate
@@ -125,19 +134,10 @@ const maritalStatus = [
 const form = ref(null);
 
 async function decrementOldLocationCounts() {
-  console.log("decrementing old location counts");
-
   const singleCount = userStore.userData.maritalStatus === "Single" ? 1 : 0;
-  console.log(singleCount);
 
   try {
     const locDecRef = doc($firestore, "locations", userStore.userData.location);
-    console.log(
-      userStore.userData.preteens,
-      userStore.userData.teens,
-      userStore.userData.youngAdults,
-      userStore.userData.adults
-    );
 
     const update: any = await updateDoc(locDecRef, {
       "attendees.preteens": increment(-Math.abs(userStore.userData.preteens)),
@@ -152,7 +152,6 @@ async function decrementOldLocationCounts() {
     });
 
     if (update) {
-      console.log("should have decremented old location counts", update);
       return true;
     }
   } catch (e) {
@@ -162,10 +161,7 @@ async function decrementOldLocationCounts() {
 }
 
 async function decrementSameLocationCounts() {
-  console.log("decrementing same location counts");
-
   const singleCount = userStore.userData.maritalStatus === "Single" ? 1 : 0;
-  console.log(singleCount);
 
   try {
     const locDecRef = doc(
@@ -186,7 +182,6 @@ async function decrementSameLocationCounts() {
     });
 
     if (update) {
-      console.log("should have decremented same location counts", update);
       return true;
     }
   } catch (e) {
@@ -196,11 +191,8 @@ async function decrementSameLocationCounts() {
 }
 
 async function incrementLocationCounts() {
-  console.log("incrementing location counts");
-
   const singleCount =
     propsEdit.value.userData.maritalStatus === "Single" ? 1 : 0;
-  console.log(singleCount);
 
   try {
     const locIncRef = doc(
@@ -217,7 +209,6 @@ async function incrementLocationCounts() {
       "attendees.total": increment(total.value),
     });
     if (update) {
-      console.log("should have incremented location counts", update);
       return true;
     }
   } catch (e) {
@@ -236,7 +227,6 @@ async function submit() {
   loading.value = true;
   // If this is the initial location selection, increment
   if (!userStore.userData.location) {
-    console.log("first time selecting location");
     await incrementLocationCounts();
   }
 
@@ -245,7 +235,6 @@ async function submit() {
     userStore.userData.location &&
     userStore.userData.location !== propsEdit.value.userData.location
   ) {
-    console.log("switching locations");
     // Decrement pinia location counts in firestore
     await decrementOldLocationCounts();
     setTimeout(() => {
@@ -268,7 +257,6 @@ async function submit() {
   }
 
   try {
-    console.log("updating userData");
     // Update users profile
     const docRef = doc($firestore, "users", userStore.id);
     const updateUser: any = await updateDoc(docRef, {
@@ -289,7 +277,12 @@ async function submit() {
 
   await userStore.getUserData();
 
+  const locatonPath = userStore.locations.filter((loc) => {
+    return loc.name === propsEdit.value.userData.location;
+  });
+
   emit("submitted", true);
   loading.value = false;
+  navigateTo(`/location/${locatonPath[0].data.path}`);
 }
 </script>

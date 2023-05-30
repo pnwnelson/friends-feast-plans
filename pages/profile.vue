@@ -1,6 +1,11 @@
 <template>
   <v-container :class="{ 'w-50': $vuetify.display.md }">
     <v-row>
+      <v-btn class="ma-2" variant="text" @click="$router.push('/')">
+        <v-icon start icon="mdi-arrow-left"></v-icon>Site List
+      </v-btn>
+    </v-row>
+    <v-row>
       <v-col>
         <h2>Profile</h2>
       </v-col>
@@ -16,12 +21,11 @@
     <v-row>
       <v-col>
         <p class="text-caption">
-          Editing this form will update your selected planned Feast site's
-          attendance count in this app. Please tell us how many adults,
-          preteens, teens and young adults that will be traveling with you. If
-          someone who is traveling with you already submitted their own form (or
-          plans to), please do not include them. Remember to update your profile
-          if your plans change!
+          <strong>Edit this form to update your planned Feast site. </strong>
+          Please tell us how many adults, preteens, teens and young adults that
+          will be traveling with you. If someone who is traveling with you
+          already submitted their own form (or plans to), please do not include
+          them. Remember to update your profile if your plans change!
         </p>
       </v-col>
     </v-row>
@@ -37,18 +41,21 @@
               label="First Name"
               disabled
               variant="outlined"
+              density="compact"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.lastname"
               label="Last Name"
               disabled
               variant="outlined"
+              density="compact"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.email"
               label="Email Address"
               disabled
               variant="outlined"
+              density="compact"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.location"
@@ -56,6 +63,7 @@
               persistent-placeholder
               disabled
               variant="outlined"
+              density="compact"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.maritalStatus"
@@ -63,6 +71,7 @@
               persistent-placeholder
               disabled
               variant="outlined"
+              density="compact"
             >
             </v-text-field>
             <v-text-field
@@ -71,6 +80,7 @@
               persistent-placeholder
               disabled
               variant="outlined"
+              density="compact"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.preteens"
@@ -78,6 +88,7 @@
               persistent-placeholder
               disabled
               variant="outlined"
+              density="compact"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.teens"
@@ -85,6 +96,7 @@
               persistent-placeholder
               disabled
               variant="outlined"
+              density="compact"
             ></v-text-field>
             <v-text-field
               v-model="userStore.userData.youngAdults"
@@ -92,8 +104,9 @@
               persistent-placeholder
               disabled
               variant="outlined"
+              density="compact"
             ></v-text-field>
-            <div>Total: {{ total }}</div>
+            <div>Total Attendees: {{ total }}</div>
             <v-btn v-if="editingProfile" type="submit" block class="mt-2"
               >Submit</v-btn
             >

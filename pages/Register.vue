@@ -149,7 +149,7 @@ async function createUserProfile(user: any) {
       if (docSnap.exists()) {
         store.userData = docSnap.data();
       }
-      navigateTo("/");
+      navigateTo("/profile");
     }
   } catch (e) {
     console.error("Error adding document: ", e);

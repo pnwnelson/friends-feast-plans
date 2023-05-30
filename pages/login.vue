@@ -14,7 +14,11 @@
             class="mb-2"
             @click="clearError"
           ></v-alert>
-          <v-form validate-on="submit" @submit.prevent="handleLogin">
+          <v-form
+            validate-on="submit"
+            class="mt-3"
+            @submit.prevent="handleLogin"
+          >
             <v-text-field
               v-model="email"
               :rules="emailRules"
@@ -41,7 +45,7 @@
         </v-sheet>
         <v-sheet v-if="showResetPassword" width="300" class="mx-auto">
           <div class="text-subtitle-1 mb-3">
-            Enter your email address and you should recieve an email to reset
+            Submit your email address and you should recieve an email to reset
             your password
           </div>
           <v-form validate-on="submit" @submit.prevent="handleResetPassword">

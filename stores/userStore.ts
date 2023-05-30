@@ -27,7 +27,6 @@ export const useUserStore = defineStore(
     }
 
     async function getUserData() {
-      console.log("getting userData", id.value);
       const { $firestore } = useNuxtApp();
       const store = useUserStore();
 
@@ -35,16 +34,11 @@ export const useUserStore = defineStore(
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log("userData data:", docSnap.data());
         userData.value = docSnap.data();
-      } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
       }
     }
 
     async function getLocationData() {
-      console.log("getting locations from action");
       const { $firestore } = useNuxtApp();
       const locRef = await getDocs(
         // TODO: grab the year automatically
@@ -53,10 +47,6 @@ export const useUserStore = defineStore(
           where("years.2023", "==", true)
         )
       );
-
-      if (locRef) {
-        console.log("should have got locations");
-      }
 
       const locArray = [];
 

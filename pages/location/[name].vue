@@ -2,7 +2,7 @@
   <v-container :class="{ 'w-50': $vuetify.display.md }">
     <v-row>
       <v-btn class="ma-2" variant="text" @click="$router.push('/')">
-        <v-icon start icon="mdi-arrow-left"></v-icon>Back
+        <v-icon start icon="mdi-arrow-left"></v-icon>Site List
       </v-btn>
     </v-row>
     <v-row>
@@ -104,13 +104,11 @@ const userStore = useUserStore();
 const { $firestore } = useNuxtApp();
 
 onMounted(() => {
-  console.log("location page for ", locationPath.value);
   getLocationDetails();
   // getFamilies();
 });
 
 async function getLocationDetails() {
-  console.log("gettingi details for ", locationPath.value);
   loading.value = true;
   const locRef = await getDocs(
     // TODO: grab the year automatically
@@ -120,10 +118,7 @@ async function getLocationDetails() {
     )
   );
 
-  console.log(locRef);
-
   locRef.forEach((doc) => {
-    console.log(doc.data());
     location.name = doc.id;
     location.data = doc.data();
     // locations.push(obj);
@@ -137,7 +132,6 @@ async function getLocationDetails() {
 }
 
 async function getFamilies() {
-  console.log("getting familes for ", location.name);
   const familesRef = await getDocs(
     // TODO: grab the year automatically
     query(
@@ -146,9 +140,7 @@ async function getFamilies() {
     )
   );
 
-  console.log(familesRef);
   familesRef.forEach((doc) => {
-    console.log(doc.data());
     families.value.push(doc.data());
   });
 }
