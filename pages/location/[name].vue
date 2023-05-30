@@ -11,39 +11,39 @@
           {{ location.name }}
         </h2>
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12">
             <div v-if="location.name" class="d-flex flex-column w-100">
               <v-chip class="my-2 pa-2">
-                <span class="mr-1">Preteens:</span>
-                <span class="font-weight-bold">
+                <span class="mr-1">Preteens (Ages 0.01-11):</span>
+                <span class="font-weight-bold text-right">
                   {{ location.data.attendees.preteens }}</span
                 >
               </v-chip>
               <v-chip class="my-2 pa-2">
-                <span class="mr-1">Teens:</span>
+                <span class="mr-1">Teens (Ages 12-18):</span>
                 <span class="font-weight-bold">
                   {{ location.data.attendees.teens }}</span
                 >
               </v-chip>
               <v-chip class="my-2 pa-2">
-                <span class="mr-1">Young Adults:</span>
+                <span class="mr-1">Young Adults (Ages 19-34):</span>
                 <span class="font-weight-bold">
                   {{ location.data.attendees.youngAdults }}</span
                 >
               </v-chip>
               <v-chip class="my-2 pa-2">
-                <span class="mr-1">Singles:</span>
+                <span class="mr-1">Singles (Age 35+):</span>
                 <span class="font-weight-bold">
                   {{ location.data.attendees.singles }}</span
                 >
               </v-chip>
               <v-chip class="my-2 pa-2">
-                Total: {{ location.data.attendees.total }}
+                <span class="mr-1">Total:</span>
+                <span class="font-weight-bold">{{
+                  location.data.attendees.total
+                }}</span>
               </v-chip>
             </div>
-          </v-col>
-          <v-col cols="6">
-            <div>Groups (coming soon)</div>
           </v-col>
         </v-row>
       </v-col>
