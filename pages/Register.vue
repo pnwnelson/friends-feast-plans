@@ -38,9 +38,14 @@
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
             ></v-text-field>
-            <v-btn type="submit" block class="mt-2 bg-blue-grey-lighten-1"
-              >Submit</v-btn
-            >
+            <v-btn type="submit" block class="mt-2 bg-blue-grey-lighten-1">
+              <span v-if="!loading">Submit</span>
+              <v-progress-circular
+                v-if="loading"
+                indeterminate
+                model-value="20"
+              ></v-progress-circular>
+            </v-btn>
           </v-form>
         </v-sheet>
       </v-col>
@@ -65,6 +70,8 @@ const valid = ref(false);
 const email = ref(null);
 const password1 = ref(null);
 const password2 = ref(null);
+const loading = ref(false);
+
 const emailRules = reactive([
   (value: any) => {
     if (value) return true;
@@ -98,6 +105,7 @@ function clearError() {
 }
 
 async function registerUser() {
+  loading.value = true;
   store.error = null;
   try {
     const { user } = await createUserWithEmailAndPassword(
@@ -150,7 +158,11 @@ async function createUserProfile(user: any) {
       if (docSnap.exists()) {
         store.userData = docSnap.data();
       }
-      navigateTo("/profile");
+
+      setTimeout(() => {
+        navigateTo("/profile");
+        loading.value = false;
+      }, 1500);
     }
   } catch (e) {
     console.error("Error adding document: ", e);
