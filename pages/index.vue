@@ -46,7 +46,7 @@
           v-if="userStore.userData && userStore.userData.location"
           v-model:items-per-page="itemsPerPage"
           :headers="isMobile ? mobileHeaders : headers"
-          :items="locations"
+          :items="userStore.locations"
           item-value="name"
           class="elevation-1"
           density="compact"
@@ -90,7 +90,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(location, index) in locations" :key="index">
+            <tr
+              v-for="(location, index) in userStore.locations.slice(0, 6)"
+              :key="index"
+            >
               <td v-if="location.name">
                 <nuxt-link
                   class="pointer"
@@ -219,21 +222,31 @@ function dismissBanner() {
 
 async function getLocations() {
   loading.value = true;
-  if (!userStore.userData || !userStore.userData.location) {
-    console.log("shoul be limiting");
-    locationQuery.value = query(
-      collection($firestore, "locations"),
-      where("years.2023", "==", true),
-      limit(7)
-    );
-  } else {
-    console.log("all locs");
-    locationQuery.value = query(
-      collection($firestore, "locations"),
-      where("years.2023", "==", true)
-    );
-  }
-  console.log(locationQuery.value);
+  // if (!userStore.userData || !userStore.userData.location) {
+  //   console.log("shoul be limiting");
+  //   locationQuery.value = query(
+  //     collection($firestore, "locations"),
+  //     where("years.2023", "==", true),
+  //     limit(7)
+  //   );
+
+  //   const locRef = await getDocs(
+  //     // TODO: grab the year automatically
+  //     locationQuery.value
+  //   );
+
+  //   locRef.forEach((doc) => {
+  //     const obj = { name: doc.id, data: doc.data() };
+  //     locations.push(obj);
+  //     userStore.limitedLocations = locations;
+  //   });
+  // }
+  console.log("all locs");
+  locationQuery.value = query(
+    collection($firestore, "locations"),
+    where("years.2023", "==", true)
+  );
+
   const locRef = await getDocs(
     // TODO: grab the year automatically
     locationQuery.value
@@ -244,6 +257,17 @@ async function getLocations() {
     locations.push(obj);
     userStore.locations = locations;
   });
+  // console.log(locationQuery.value);
+  // const locRef = await getDocs(
+  //   // TODO: grab the year automatically
+  //   locationQuery.value
+  // );
+
+  // locRef.forEach((doc) => {
+  //   const obj = { name: doc.id, data: doc.data() };
+  //   locations.push(obj);
+  //   userStore.locations = locations;
+  // });
   loading.value = false;
 }
 
@@ -297,41 +321,5 @@ select {
 
 .pointer {
   cursor: pointer;
-}
-
-#overlay {
-  position: relative;
-}
-
-#overlay::before {
-  background-image: linear-gradient(
-    top,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  background-image: -moz-linear-gradient(
-    top,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  background-image: -ms-linear-gradient(
-    top,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  background-image: -o-linear-gradient(
-    top,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  background-image: -webkit-linear-gradient(
-    top,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  content: "\00a0";
-  height: 100%;
-  position: absolute;
-  width: 100%;
 }
 </style>

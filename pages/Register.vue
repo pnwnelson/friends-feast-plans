@@ -130,6 +130,7 @@ async function createUserProfile(user: any) {
         firstname: null,
         lastname: null,
         location: null,
+        locationStatus: null,
         isSingle: false,
         maritalStatus: null,
         preteens: 0,

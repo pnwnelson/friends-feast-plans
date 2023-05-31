@@ -51,6 +51,15 @@
         density="compact"
       >
       </v-select>
+      <v-alert
+        v-if="userStore.error"
+        color="error"
+        density="compact"
+        closable
+        :text="userStore.error"
+        class="mb-2"
+        @click="clearError"
+      ></v-alert>
       <p class="pa-2 text-caption text-medium-emphasis">
         How many of each in your group will be attending?
       </p>
@@ -145,6 +154,10 @@ const maritalStatus = [
 
 const form = ref(null);
 
+function clearError() {
+  userStore.error = null;
+}
+
 async function decrementOldLocationCounts() {
   const singleCount = userStore.userData.maritalStatus === "Single" ? 1 : 0;
 
@@ -230,9 +243,16 @@ async function incrementLocationCounts() {
 }
 
 async function submit() {
+  userStore.error = null;
   // Validate
   const valid = await profileForm.value.validate();
   if (!valid.valid) {
+    return;
+  }
+
+  if (total.value === 0) {
+    userStore.error =
+      "You must enter at least one adult, preteen, teen or young adults";
     return;
   }
 
