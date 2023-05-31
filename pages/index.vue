@@ -54,6 +54,15 @@
           @click:row="getLocationDetail"
         ></v-data-table>
         <!-- plain table preview -->
+        <h4
+          v-if="
+            !userStore.isAuthenticated ||
+            (userStore.userData && !userStore.userData.location)
+          "
+          class="my-2 text-center"
+        >
+          Here's a sample of 5 random Feast sites
+        </h4>
         <v-table
           v-if="
             !userStore.isAuthenticated ||
@@ -90,10 +99,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(location, index) in userStore.locations.slice(0, 6)"
-              :key="index"
-            >
+            <tr v-for="(location, index) in randomLocationList" :key="index">
               <td v-if="location.name">
                 <nuxt-link
                   class="pointer"
@@ -148,7 +154,7 @@
           class="d-flex text-center px-3"
         >
           <v-card-text>
-            Want to see more Feast sites? Please
+            Want to see all the Feast sites? Please
             <nuxt-link class="text-decoration-none" to="/login"
               >login</nuxt-link
             >
@@ -170,13 +176,23 @@ import { collection, query, where, getDocs, limit } from "firebase/firestore";
 import { VDataTable } from "vuetify/labs/VDataTable";
 import { useUserStore } from "./../stores/userStore";
 
+// definePageMeta({
+//   isFromLocationPage: (route) => {
+//     // Check if the id is made up of digits
+//     return route.from;
+//     // return /^\d+$/.test(route.params.id);
+//   },
+// });
+
 const userStore = useUserStore();
+
+const route = useRoute();
 
 const { $firestore } = useNuxtApp();
 const locations = reactive([]);
+const randomLocationList = reactive([]);
 const loading = ref(false);
 const locPath = ref(null);
-// const showBanner = ref(true);
 const dismissBannerCookie = useCookie("bannerDismiss");
 const isMobile = ref(false);
 const locationQuery = ref(null);
@@ -213,6 +229,7 @@ const mobileHeaders = [
 onMounted(() => {
   getLocations();
   onResize();
+  // console.log(route.matched);
 });
 
 function dismissBanner() {
@@ -222,26 +239,7 @@ function dismissBanner() {
 
 async function getLocations() {
   loading.value = true;
-  // if (!userStore.userData || !userStore.userData.location) {
-  //   console.log("shoul be limiting");
-  //   locationQuery.value = query(
-  //     collection($firestore, "locations"),
-  //     where("years.2023", "==", true),
-  //     limit(7)
-  //   );
 
-  //   const locRef = await getDocs(
-  //     // TODO: grab the year automatically
-  //     locationQuery.value
-  //   );
-
-  //   locRef.forEach((doc) => {
-  //     const obj = { name: doc.id, data: doc.data() };
-  //     locations.push(obj);
-  //     userStore.limitedLocations = locations;
-  //   });
-  // }
-  console.log("all locs");
   locationQuery.value = query(
     collection($firestore, "locations"),
     where("years.2023", "==", true)
@@ -257,26 +255,21 @@ async function getLocations() {
     locations.push(obj);
     userStore.locations = locations;
   });
-  // console.log(locationQuery.value);
-  // const locRef = await getDocs(
-  //   // TODO: grab the year automatically
-  //   locationQuery.value
-  // );
 
-  // locRef.forEach((doc) => {
-  //   const obj = { name: doc.id, data: doc.data() };
-  //   locations.push(obj);
-  //   userStore.locations = locations;
-  // });
+  makeRandomLocationList();
+
   loading.value = false;
+}
+
+function makeRandomLocationList() {
+  const test = locations.sort(() => 0.5 - Math.random()).slice(0, 5);
+  test.forEach((loc) => {
+    randomLocationList.push(loc);
+  });
 }
 
 function getLocationDetail(location, data) {
   return navigateTo(`/location/${data.item.props.title.data.path}`);
-}
-
-function getLocationDetailPreview(location) {
-  return navigateTo(`/location/${location.data.path}`);
 }
 
 function onResize() {
