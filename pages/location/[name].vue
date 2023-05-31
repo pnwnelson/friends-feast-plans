@@ -1,9 +1,17 @@
 <template>
-  <v-container :class="{ 'w-50': $vuetify.display.md }">
+  <v-container :class="{ 'w-50': $vuetify.display.lg }">
     <v-row>
       <v-btn class="ma-2" variant="text" @click="$router.push('/')">
         <v-icon start icon="mdi-arrow-left"></v-icon>Site List
       </v-btn>
+    </v-row>
+    <v-row v-if="loading">
+      <v-col class="d-flex justify-center">
+        <v-progress-circular
+          indeterminate
+          model-value="20"
+        ></v-progress-circular>
+      </v-col>
     </v-row>
     <v-row>
       <v-col>
@@ -64,8 +72,7 @@
             </v-form>
           </div>
           <div>
-            <div v-if="!families.length">None yet</div>
-            <div>
+            <div v-if="families.length">
               <v-icon size="small" color="green" icon="mdi-home"></v-icon>
               <span class="text-caption"> - Housing is booked</span>
             </div>
@@ -79,6 +86,7 @@
                 ></span>
               </div>
             </div>
+            <div v-if="!families.length">No families yet</div>
           </div>
         </div>
         <div v-else class="pa-3 bg-blue-grey-lighten-5">

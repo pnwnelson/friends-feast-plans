@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container :class="{ 'w-50': $vuetify.display.lg }">
     <v-row>
       <v-col>
         <v-banner
@@ -59,7 +59,6 @@
             !userStore.isAuthenticated ||
             (userStore.userData && !userStore.userData.location)
           "
-          id="overlay"
           density="compact"
           fixed-header
         >
@@ -94,8 +93,8 @@
             <tr v-for="(location, index) in locations" :key="index">
               <td v-if="location.name">
                 <nuxt-link
-                  class="text-decoration-none pointer"
-                  @click="getLocationDetailPreview()"
+                  class="pointer"
+                  :to="'/location/' + location.data.path"
                 >
                   <span class="d-none d-sm-flex">{{ location.name }}</span>
                   <span class="d-flex d-sm-none">{{ location.data.abbr }}</span>
@@ -143,7 +142,7 @@
         </v-table>
         <div
           v-if="!userStore.userData || !userStore.userData.location"
-          class="d-flex justify-center px-5"
+          class="d-flex text-center px-3"
         >
           <v-card-text>
             Want to see more Feast sites? Please
@@ -158,26 +157,6 @@
           </v-card-text>
         </div>
       </v-col>
-      <v-dialog v-model="dialog" width="auto">
-        <v-card>
-          <v-card-text>
-            Want to see more Feast sites? Please
-            <nuxt-link class="text-decoration-none" to="/login"
-              >login</nuxt-link
-            >
-            or
-            <nuxt-link class="text-decoration-none" to="/Register"
-              >create an account</nuxt-link
-            >
-            and let us know where you plan to attend!
-          </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" block @click="dialog = false"
-              >Close Dialog</v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-row>
   </v-container>
 </template>
@@ -198,7 +177,6 @@ const locPath = ref(null);
 const dismissBannerCookie = useCookie("bannerDismiss");
 const isMobile = ref(false);
 const locationQuery = ref(null);
-const dialog = ref(false);
 
 const itemsPerPage = -1;
 const headers = [
@@ -246,7 +224,7 @@ async function getLocations() {
     locationQuery.value = query(
       collection($firestore, "locations"),
       where("years.2023", "==", true),
-      limit(6)
+      limit(7)
     );
   } else {
     console.log("all locs");
@@ -273,9 +251,8 @@ function getLocationDetail(location, data) {
   return navigateTo(`/location/${data.item.props.title.data.path}`);
 }
 
-function getLocationDetailPreview() {
-  // show alert
-  dialog.value = true;
+function getLocationDetailPreview(location) {
+  return navigateTo(`/location/${location.data.path}`);
 }
 
 function onResize() {
