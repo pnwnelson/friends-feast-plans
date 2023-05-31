@@ -174,6 +174,7 @@
 import { ref, onMounted } from "vue";
 import { collection, query, where, getDocs, limit } from "firebase/firestore";
 import { VDataTable } from "vuetify/labs/VDataTable";
+import cloneDeep from "lodash/cloneDeep";
 import { useUserStore } from "./../stores/userStore";
 
 // definePageMeta({
@@ -262,7 +263,8 @@ async function getLocations() {
 }
 
 function makeRandomLocationList() {
-  const test = locations.sort(() => 0.5 - Math.random()).slice(0, 5);
+  const locationClone = cloneDeep(locations);
+  const test = locationClone.sort(() => 0.5 - Math.random()).slice(0, 5);
   test.forEach((loc) => {
     randomLocationList.push(loc);
   });
