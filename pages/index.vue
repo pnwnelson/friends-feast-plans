@@ -41,15 +41,21 @@
             = Singles
           </v-banner-text>
         </v-banner>
+        <p class="text-right text-caption text-disabled">
+          *Sort by clicking on a column header
+        </p>
         <!-- sortable table -->
         <v-data-table
           v-if="userStore.userData && userStore.userData.location"
           v-model:items-per-page="itemsPerPage"
+          v-model:sort-by="sortBy"
           :headers="isMobile ? mobileHeaders : headers"
           :items="userStore.locations"
           item-value="name"
           class="elevation-1"
           hover
+          height="100vh"
+          fixed-header
           density="compact"
           :class="{ mobile: isMobile }"
           @click:row="getLocationDetail"
@@ -204,6 +210,8 @@ const locPath = ref(null);
 const dismissBannerCookie = useCookie("bannerDismiss");
 const isMobile = ref(false);
 const locationQuery = ref(null);
+const sortBy = ref([{ key: "name", order: "asc" }]);
+const sortDesc = ref(false);
 
 const itemsPerPage = -1;
 const headers = [
@@ -311,6 +319,10 @@ select {
 
   .v-table > .v-table__wrapper > table > thead > tr > th {
     padding: 0 8px;
+  }
+
+  .v-table > .v-table__wrapper > table > thead {
+    background-color: "red" !important;
   }
 }
 .flex-content {
