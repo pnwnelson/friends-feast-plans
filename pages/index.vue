@@ -49,10 +49,17 @@
           :items="userStore.locations"
           item-value="name"
           class="elevation-1"
+          hover
           density="compact"
           :class="{ mobile: isMobile }"
           @click:row="getLocationDetail"
-        ></v-data-table>
+        >
+        </v-data-table>
+        <!-- <template #item.name="{ item }">
+          <v-chip :color="green" class="d-flex">
+            <v-btn>{{ item.columns.name }}</v-btn>
+          </v-chip>
+        </template> -->
         <!-- plain table preview -->
         <h4
           v-if="
@@ -296,6 +303,14 @@ select {
 
   .v-data-table td {
     font-size: 14px;
+  }
+
+  .v-table > .v-table__wrapper > table > tbody > tr > td {
+    padding: 0 8px;
+  }
+
+  .v-table > .v-table__wrapper > table > thead > tr > th {
+    padding: 0 8px;
   }
 }
 .flex-content {

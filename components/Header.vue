@@ -24,7 +24,7 @@
     </v-btn>
     <v-col v-if="store.isAuthenticated" cols="auto">
       <v-btn
-        class="bg-blue-grey-lighten-4 mr-2"
+        class="bg-blue-grey-lighten-5 mr-2"
         @click="$router.push('/profile')"
       >
         Profile

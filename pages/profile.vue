@@ -12,7 +12,8 @@
       <v-spacer></v-spacer>
       <v-col class="text-right">
         <v-btn
-          class="bg-blue-grey-lighten-5 mr-2"
+          class="bg-indigo-lighten-2 mr-2"
+          :class="{ 'bg-blue-lighten-5': editingProfile }"
           @click="editingProfile = !editingProfile"
           >{{ !editingProfile ? "EDIT" : "CANCEL" }}</v-btn
         >
