@@ -16,10 +16,10 @@
           **This site is not affliated with any particular Church of God
           organization.**
         </p>
-        <p>Please use the contact form below for any questions.</p>
+        <!-- <p>Please use the contact form below for any questions.</p> -->
       </v-col>
     </v-row>
-    <v-row>
+    <!-- <v-row>
       <v-col>
         <form
           name="contact"
@@ -63,7 +63,7 @@
           </v-btn>
         </form>
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 
