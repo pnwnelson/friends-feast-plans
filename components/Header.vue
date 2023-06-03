@@ -37,6 +37,9 @@
           <v-list-item>
             <v-btn @click="handleLogout">Logout</v-btn>
           </v-list-item>
+          <v-list-item>
+            <v-btn :to="'/about'"> About </v-btn>
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-col>
