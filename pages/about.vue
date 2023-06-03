@@ -22,7 +22,6 @@
     <v-row>
       <v-col>
         <form
-          action="/thanks"
           name="contact"
           method="post"
           data-netlify="true"
