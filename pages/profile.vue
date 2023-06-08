@@ -22,7 +22,10 @@
     <v-row>
       <v-col>
         <p class="text-caption">
-          <strong>Edit this form to update your planned Feast site. </strong>
+          <strong
+            >Edit this form to update your planned Feast site. Even if they are
+            very loose plans or even just in "idea" phase!
+          </strong>
           Please tell us how many adults, preteens, teens and young adults that
           will be traveling with you. If someone who is traveling with you
           already submitted their own form (or plans to), please do not include

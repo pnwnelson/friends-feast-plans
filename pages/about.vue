@@ -7,14 +7,17 @@
     </v-row>
     <v-row>
       <v-col>
+        <p class="mb-2">Greetings!</p>
         <p class="mb-2">
-          This site came out of the desire to know where the different groups of
-          people (preteens, teens, young adults, etc) might be planning to
-          attend the Feast of Tabernacles each year.
+          This site was the result of the desire to quickly know where the
+          different age groups of people (preteens, teens, young adults, etc)
+          might be planning to attend the Feast of Tabernacles each year with
+          the Churches of God- those which broke off from the Worldwide Church
+          of God.
         </p>
-        <p class="mb-2">
+        <p class="mb-2 text-caption">
           **This site is not affliated with any particular Church of God
-          organization.**
+          organization.
         </p>
         <!-- <p>Please use the contact form below for any questions.</p> -->
       </v-col>

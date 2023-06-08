@@ -41,7 +41,10 @@
             = Singles
           </v-banner-text>
         </v-banner>
-        <p class="text-right text-caption text-disabled">
+        <p
+          v-if="userStore.userData && userStore.userData.location"
+          class="text-right text-caption text-disabled"
+        >
           *Sort by clicking on a column header
         </p>
         <!-- sortable table -->
@@ -207,7 +210,9 @@ const locations = reactive([]);
 const randomLocationList = reactive([]);
 const loading = ref(false);
 const locPath = ref(null);
-const dismissBannerCookie = useCookie("bannerDismiss");
+const dismissBannerCookie = useCookie("bannerDismiss", {
+  maxAge: 60 * 60 * 24 * 7 * 4, // one month
+});
 const isMobile = ref(false);
 const locationQuery = ref(null);
 const sortBy = ref([{ key: "name", order: "asc" }]);
