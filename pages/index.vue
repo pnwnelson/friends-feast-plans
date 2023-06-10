@@ -248,10 +248,18 @@ const mobileHeaders = [
 ];
 
 onMounted(() => {
-  getLocations();
+  // getLocations();
   onResize();
+  checkRoute();
   // console.log(route.matched);
 });
+
+function checkRoute() {
+  if (!userStore.isFromLocationPage) {
+    getLocations();
+  }
+  userStore.isFromLocationPage = false;
+}
 
 function dismissBanner() {
   dismissBannerCookie.value = "true";

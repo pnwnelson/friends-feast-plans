@@ -353,6 +353,12 @@ async function submit() {
 
   emit("submitted", true);
   loading.value = false;
-  navigateTo(`/location/${locatonPath[0].data.path}`);
+  // navigateTo(`/location/${locatonPath[0].data.path}`);
+  navigateTo({
+    path: `/location/${locatonPath[0].data.path}`,
+    query: {
+      fromFormSubmit: "true",
+    },
+  });
 }
 </script>

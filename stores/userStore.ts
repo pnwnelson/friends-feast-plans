@@ -17,6 +17,7 @@ export const useUserStore = defineStore(
     const locations = ref([]);
     const userData = ref(null);
     const error = ref(null);
+    const isFromLocationPage = ref(false);
 
     function resetTheThings() {
       id.value = null;
@@ -63,6 +64,7 @@ export const useUserStore = defineStore(
       locations,
       userData,
       error,
+      isFromLocationPage,
       resetTheThings,
       getUserData,
       getLocationData,

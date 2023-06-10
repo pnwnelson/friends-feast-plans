@@ -1,7 +1,7 @@
 <template>
   <v-container :class="{ 'w-50': $vuetify.display.lg }">
     <v-row>
-      <v-btn class="ma-2" variant="text" @click="$router.push('/')">
+      <v-btn class="ma-2" variant="text" @click="backToHome">
         <v-icon start icon="mdi-arrow-left"></v-icon>Site List
       </v-btn>
     </v-row>
@@ -133,7 +133,18 @@ const { $firestore } = useNuxtApp();
 onMounted(() => {
   getLocationDetails();
   // getFamilies();
+  console.log(route.query.fromFormSubmit);
 });
+
+function backToHome() {
+  if (route.query.fromFormSubmit === "true") {
+    navigateTo("/");
+  } else {
+    // tell the app we're going from a site page back to home and to not reload
+    userStore.isFromLocationPage = true;
+    navigateTo("/");
+  }
+}
 
 async function getLocationDetails() {
   loading.value = true;
