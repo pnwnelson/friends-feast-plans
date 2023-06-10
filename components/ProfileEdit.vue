@@ -37,6 +37,15 @@
         density="compact"
         :rules="[(v) => !!v || 'Planned site is required']"
       ></v-select>
+      <v-text-field
+        v-if="propsEdit.userData.location === 'Other'"
+        v-model="otherLocation"
+        label="Site Location"
+        :placeholder="propsEdit.userData.otherLocation"
+        persistent-placeholder
+        density="compact"
+        :rules="rules"
+      ></v-text-field>
       <v-select
         v-model="propsEdit.userData.locationStatus"
         label="How solid are your plans?"
@@ -102,7 +111,13 @@
 <script lang="ts" setup>
 import { ref, onMounted, ComputedRef } from "vue";
 import cloneDeep from "lodash/cloneDeep";
-import { updateDoc, collection, doc, increment } from "firebase/firestore";
+import {
+  updateDoc,
+  collection,
+  doc,
+  increment,
+  arrayUnion,
+} from "firebase/firestore";
 
 import { useUserStore } from "../stores/userStore";
 
@@ -115,6 +130,7 @@ const props = defineProps<{
 }>();
 
 const propsEdit = ref(cloneDeep(props));
+const otherLocation = ref(null);
 const loading = ref(false);
 const profileForm = ref(null);
 
@@ -257,6 +273,26 @@ async function submit() {
   }
 
   loading.value = true;
+  // If location is "other", update that locaton with the custom location
+  if (propsEdit.value.userData.location === "Other") {
+    try {
+      const locRef = doc(
+        $firestore,
+        "locations",
+        propsEdit.value.userData.location
+      );
+      const update: any = await updateDoc(locRef, {
+        otherLocation: arrayUnion(otherLocation.value),
+      });
+      if (update) {
+        return true;
+      }
+    } catch (e) {
+      console.error("Failed to update other location", e);
+      return false;
+    }
+  }
+
   // If this is the initial location selection, increment
   if (!userStore.userData.location) {
     await incrementLocationCounts();
@@ -302,6 +338,7 @@ async function submit() {
       teens: propsEdit.value.userData.teens,
       youngAdults: propsEdit.value.userData.youngAdults,
       location: propsEdit.value.userData.location,
+      otherLocation: otherLocation.value,
       locationStatus: propsEdit.value.userData.locationStatus,
     });
   } catch (e) {
