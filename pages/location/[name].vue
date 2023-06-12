@@ -133,7 +133,6 @@ const { $firestore } = useNuxtApp();
 onMounted(() => {
   getLocationDetails();
   // getFamilies();
-  console.log(route.query.fromFormSubmit);
 });
 
 function backToHome() {

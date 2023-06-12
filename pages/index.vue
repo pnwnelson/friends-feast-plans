@@ -51,7 +51,6 @@
         <v-data-table
           v-if="userStore.userData && userStore.userData.location"
           v-model:items-per-page="itemsPerPage"
-          v-model:sort-by="sortBy"
           :headers="isMobile ? mobileHeaders : headers"
           :items="userStore.locations"
           item-value="name"
@@ -215,7 +214,7 @@ const dismissBannerCookie = useCookie("bannerDismiss", {
 });
 const isMobile = ref(false);
 const locationQuery = ref(null);
-const sortBy = ref([{ key: "name", order: "asc" }]);
+// const sortBy = ref([{ key: "name", order: "asc" }]);
 const sortDesc = ref(false);
 
 const itemsPerPage = -1;
@@ -255,8 +254,11 @@ onMounted(() => {
 });
 
 function checkRoute() {
+  console.log("checking route", userStore.isFromLocationPage);
   if (!userStore.isFromLocationPage) {
     getLocations();
+  } else {
+    makeRandomLocationList();
   }
   userStore.isFromLocationPage = false;
 }
@@ -285,13 +287,17 @@ async function getLocations() {
     userStore.locations = locations;
   });
 
+  // Put "Other" site at the end of the array
+  const findOther = locations.findIndex((loc) => loc.name === "Other");
+  userStore.locations = locations.concat(locations.splice(findOther, 1));
+
   makeRandomLocationList();
 
   loading.value = false;
 }
 
 function makeRandomLocationList() {
-  const locationClone = cloneDeep(locations);
+  const locationClone = cloneDeep(userStore.locations);
   const test = locationClone.sort(() => 0.5 - Math.random()).slice(0, 5);
   test.forEach((loc) => {
     randomLocationList.push(loc);
