@@ -14,7 +14,7 @@ export default defineNuxtConfig({
       FB_MEASUREMENT_ID: process.env.FB_MEASUREMENT_ID,
     },
   },
-  modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
+  modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "nuxt-gtag"],
   typescript: {
     // Take Over Mode handles the declaration files for us
     shim: false,
@@ -28,5 +28,8 @@ export default defineNuxtConfig({
   ],
   build: {
     transpile: ["vuetify"],
+  },
+  gtag: {
+    id: "G-363983668",
   },
 });
