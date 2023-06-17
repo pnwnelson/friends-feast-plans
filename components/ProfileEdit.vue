@@ -55,9 +55,10 @@
       <v-select
         v-model="propsEdit.userData.maritalStatus"
         label="Marital Status"
-        :items="['Single (Age 35+)', 'Married']"
+        :items="['Single (35+)', 'Married']"
         item-title="status"
         density="compact"
+        clearable
       >
       </v-select>
       <v-alert
@@ -202,7 +203,8 @@ async function decrementOldLocationCounts() {
 }
 
 async function decrementSameLocationCounts() {
-  const singleCount = userStore.userData.maritalStatus === "Single" ? 1 : 0;
+  const singleCount =
+    userStore.userData.maritalStatus === "Single (35+)" ? 1 : 0;
 
   try {
     const locDecRef = doc(
@@ -233,7 +235,7 @@ async function decrementSameLocationCounts() {
 
 async function incrementLocationCounts() {
   const singleCount =
-    propsEdit.value.userData.maritalStatus === "Single" ? 1 : 0;
+    propsEdit.value.userData.maritalStatus === "Single (35+)" ? 1 : 0;
 
   try {
     const locIncRef = doc(
@@ -332,7 +334,7 @@ async function submit() {
       lastname: propsEdit.value.userData.lastname,
       email: propsEdit.value.userData.email,
       maritalStatus: propsEdit.value.userData.maritalStatus,
-      isSingle: propsEdit.value.userData.maritalStatus === "Single",
+      isSingle: propsEdit.value.userData.maritalStatus === "Single (35+)",
       adults: propsEdit.value.userData.adults,
       preteens: propsEdit.value.userData.preteens,
       teens: propsEdit.value.userData.teens,
