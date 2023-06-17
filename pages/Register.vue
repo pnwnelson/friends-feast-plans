@@ -38,7 +38,12 @@
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
             ></v-text-field>
-            <v-btn type="submit" block class="mt-2 bg-blue-grey-lighten-1">
+            <v-btn
+              color="primary"
+              type="submit"
+              block
+              class="mt-2 bg-blue-grey-lighten-1"
+            >
               <span v-if="!loading">Submit</span>
               <v-progress-circular
                 v-if="loading"

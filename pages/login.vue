@@ -38,7 +38,11 @@
               >Forgot Password?</nuxt-link
             >
 
-            <v-btn type="submit" block class="mt-3 bg-blue-grey-lighten-1"
+            <v-btn
+              color="primary"
+              type="submit"
+              block
+              class="mt-3 bg-blue-grey-lighten-1"
               >Submit</v-btn
             >
           </v-form>
@@ -55,7 +59,7 @@
               label="E-mail"
               required
             ></v-text-field>
-            <v-btn type="submit" block class="mt-3 bg-blue-grey-lighten-1"
+            <v-btn color="primary" type="submit" block class="mt-3"
               >Submit</v-btn
             >
             <v-btn
