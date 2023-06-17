@@ -12,10 +12,18 @@
       <v-spacer></v-spacer>
       <v-col class="text-right">
         <v-btn
-          class="bg-indigo-lighten-2 mr-2"
-          :class="{ 'bg-blue-lighten-5': editingProfile }"
+          v-if="!editingProfile"
+          color="secondary"
+          class="mr-2"
           @click="editingProfile = !editingProfile"
-          >{{ !editingProfile ? "EDIT" : "CANCEL" }}</v-btn
+          >EDIT</v-btn
+        >
+        <v-btn
+          v-if="editingProfile"
+          color="primary"
+          class="mr-2"
+          @click="editingProfile = !editingProfile"
+          >CANCEL</v-btn
         >
       </v-col>
     </v-row>

@@ -14,7 +14,12 @@ export default defineNuxtConfig({
       FB_MEASUREMENT_ID: process.env.FB_MEASUREMENT_ID,
     },
   },
-  modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "nuxt-gtag"],
+  modules: [
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "nuxt-gtag",
+    "@vite-pwa/nuxt",
+  ],
   typescript: {
     // Take Over Mode handles the declaration files for us
     shim: false,
@@ -31,5 +36,35 @@ export default defineNuxtConfig({
   },
   gtag: {
     id: "G-363983668",
+  },
+  pwa: {
+    manifest: {
+      name: "Friends Feast Plans",
+      short_name: "FFP",
+      theme_color: "#143c84",
+      description:
+        "Share what you're currenly planning to do for the Feast of Tabernacles and help families with similar age groups assemble together",
+      icons: [
+        {
+          src: "icons/192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "icons/512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
+    },
+    workbox: {
+      navigateFallback: "/",
+      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+    },
+    devOptions: {
+      enabled: false,
+      suppressWarnings: true,
+      type: "module",
+    },
   },
 });

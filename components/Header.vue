@@ -1,11 +1,21 @@
 <template>
   <v-app-bar>
-    <v-toolbar-title class="w-100" @click="$router.push('/')">
+    <v-img
+      class="ma-3"
+      src="/images/FFP_Tent_LOGO_720x440.png"
+      contain
+      max-height="100"
+      max-width="100"
+      @click="$router.push('/')"
+    ></v-img>
+    <v-spacer></v-spacer>
+
+    <!-- <v-toolbar-title class="w-100" @click="$router.push('/')">
       <v-btn class="d-none d-sm-flex">Friends Feast Plans</v-btn>
       <v-btn class="d-flex d-sm-none text-button"
         >Friends <br />Feast Plans</v-btn
       >
-    </v-toolbar-title>
+    </v-toolbar-title> -->
     <v-btn
       v-if="!store.isAuthenticated"
       class="bg-blue-grey-lighten-4 mr-2"
@@ -15,8 +25,8 @@
     </v-btn>
     <v-btn
       v-if="!store.isAuthenticated"
+      color="primary"
       dark
-      class="bg-blue-grey-lighten-1"
       variant="flat"
       @click="$router.push('/login')"
     >
@@ -24,15 +34,19 @@
     </v-btn>
     <v-col v-if="store.isAuthenticated" cols="auto">
       <v-btn
-        class="bg-blue-grey-lighten-5 mr-2"
+        icon="mdi-account"
+        color="primary"
+        class="mr-2"
         @click="$router.push('/profile')"
       >
-        Profile
       </v-btn>
       <v-menu>
         <template #activator="{ props }">
-          <v-btn icon="mdi-account" size="large" v-bind="props"> </v-btn>
+          <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
         </template>
+        <!-- <template #activator="{ props }">
+          <v-btn icon="mdi-account" size="large" v-bind="props"> </v-btn>
+        </template> -->
         <v-list>
           <v-list-item>
             <v-btn @click="handleLogout">Logout</v-btn>

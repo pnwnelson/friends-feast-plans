@@ -97,7 +97,7 @@
         density="compact"
       ></v-select>
       <div>Total Going: {{ total }}</div>
-      <v-btn type="submit" block class="mt-2 mb-4 bg-indigo-lighten-2">
+      <v-btn color="primary" type="submit" block class="mt-2 mb-4">
         <span v-if="!loading">Save</span>
         <v-progress-circular
           v-if="loading"
