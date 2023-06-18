@@ -192,14 +192,6 @@ import { VDataTable } from "vuetify/labs/VDataTable";
 import cloneDeep from "lodash/cloneDeep";
 import { useUserStore } from "./../stores/userStore";
 
-// definePageMeta({
-//   isFromLocationPage: (route) => {
-//     // Check if the id is made up of digits
-//     return route.from;
-//     // return /^\d+$/.test(route.params.id);
-//   },
-// });
-
 const userStore = useUserStore();
 
 const route = useRoute();
@@ -211,6 +203,9 @@ const loading = ref(false);
 const locPath = ref(null);
 const dismissBannerCookie = useCookie("bannerDismiss", {
   maxAge: 60 * 60 * 24 * 7 * 4, // one month
+});
+const sessionTimerCookie = useCookie("sessionTimer", {
+  maxAge: 60 * 15, // 15 minutes
 });
 const isMobile = ref(false);
 const locationQuery = ref(null);
@@ -247,15 +242,23 @@ const mobileHeaders = [
 ];
 
 onMounted(() => {
-  // getLocations();
   onResize();
   checkRoute();
-  // console.log(route.matched);
+  checkForSessionCookie();
 });
 
+function checkForSessionCookie() {
+  if (!sessionTimerCookie.value) {
+    sessionTimerCookie.value = "true";
+  }
+}
+
 function checkRoute() {
-  console.log("checking route", userStore.isFromLocationPage);
-  if (!userStore.isFromLocationPage) {
+  if (userStore.isFromProfile && userStore.userData.location) {
+    userStore.isFromProfile = false;
+    getLocations();
+  }
+  if (!sessionTimerCookie.value && userStore.userData.location) {
     getLocations();
   } else {
     makeRandomLocationList();
@@ -265,7 +268,6 @@ function checkRoute() {
 
 function dismissBanner() {
   dismissBannerCookie.value = "true";
-  // showBanner.value = false;
 }
 
 async function getLocations() {
