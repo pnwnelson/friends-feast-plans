@@ -254,11 +254,11 @@ function checkForSessionCookie() {
 }
 
 function checkRoute() {
-  if (userStore.isFromProfile && userStore.userData.location) {
+  if (userStore.isFromProfile) {
     userStore.isFromProfile = false;
     getLocations();
   }
-  if (!sessionTimerCookie.value && userStore.userData.location) {
+  if (!sessionTimerCookie.value) {
     getLocations();
   } else {
     makeRandomLocationList();

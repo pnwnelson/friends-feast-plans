@@ -23,9 +23,10 @@ export const useUserStore = defineStore(
     function resetTheThings() {
       id.value = null;
       isAuthenticated.value = false;
-      locations.value = [];
       userData.value = null;
       error.value = null;
+      isFromProfile.value = false;
+      isFromLocationPage.value = false;
     }
 
     async function getUserData() {
