@@ -1,7 +1,7 @@
 <template>
   <v-container :class="{ 'w-50': $vuetify.display.md }">
     <v-row>
-      <v-btn class="ma-2" variant="text" @click="$router.push('/')">
+      <v-btn class="ma-2" variant="text" @click="backToHome">
         <v-icon start icon="mdi-arrow-left"></v-icon>Site List
       </v-btn>
     </v-row>
@@ -163,6 +163,11 @@ const total = computed(() => {
 onMounted(() => {
   userStore.getUserData();
 });
+
+function backToHome() {
+  userStore.isFromProfile = true;
+  navigateTo("/");
+}
 
 function onSubmit() {
   editingProfile.value = false;
