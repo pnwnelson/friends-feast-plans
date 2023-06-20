@@ -54,6 +54,9 @@
           <v-list-item>
             <v-btn :to="'/about'"> About </v-btn>
           </v-list-item>
+          <v-list-item>
+            <v-btn :to="'/faqs'"> FAQs </v-btn>
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-col>

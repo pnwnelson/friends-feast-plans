@@ -67,9 +67,9 @@
     <!-- Browse and Search Attendees -->
     <v-row>
       <v-col>
-        <h4 class="mb-2">Browse and Search Attendees</h4>
+        <h4 class="mb-2">Attendees</h4>
         <div v-if="userStore.userData && userStore.userData.location">
-          <h5 class="mb-2">Search (coming soon)</h5>
+          <!-- <h5 class="mb-2">Search (coming soon)</h5>
           <div class="d-flex flex-column justify-start">
             <v-form action="">
               <v-text-field
@@ -78,7 +78,7 @@
                 placeholder="Enter name"
               ></v-text-field>
             </v-form>
-          </div>
+          </div> -->
           <div>
             <div v-if="families.length">
               <v-icon size="small" color="green" icon="mdi-home"></v-icon>
