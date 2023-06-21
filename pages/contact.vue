@@ -7,29 +7,8 @@
     </v-row>
     <v-row>
       <v-col>
-        <!-- <form
-          name="contact"
-          method="POST"
-          action="/thanks"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          @submit="submit($event)"
-        >
-          <input v-model="name" type="text" name="name" class="border" />
-          <input
-            v-model="emailAddress"
-            type="email"
-            name="email"
-            class="border"
-          />
-          <input v-model="text" type="textarea" name="text" class="border" />
-          <input type="submit" />
-          <input value="contact" name="form-name" type="hidden" />
-          <p hidden>
-            <label><input name="bot-field" /></label>
-          </p>
-        </form> -->
         <v-form
+          ref="contactForm"
           name="ffp-contact-form"
           method="post"
           action="/contact-form"
@@ -43,6 +22,7 @@
             label="Name"
             persistent-placeholder
             density="compact"
+            :rules="rules"
           ></v-text-field>
           <v-text-field
             v-model="emailAddress"
@@ -51,12 +31,14 @@
             label="Email Address"
             persistent-placeholder
             density="compact"
+            :rules="rules"
           ></v-text-field>
           <v-textarea
             v-model="text"
             name="text"
             label="Talk to us"
             persistent-placeholder
+            :rules="rules"
           ></v-textarea>
           <v-btn color="primary" type="submit" block class="mt-2 mb-4">
             <span v-if="!loading">Submit</span>
@@ -76,20 +58,27 @@
   </v-container>
 </template>
 <script setup lang="ts">
+import { ref } from "vue";
+
 const name = ref(null);
 const emailAddress = ref(null);
 const text = ref(null);
 const loading = ref(false);
+const contactForm = ref(null);
 
-function submit(e) {
+const rules = [(v) => !!v || "Field is required"];
+
+async function submit(e) {
+  const valid = await contactForm.value.validate();
+  if (!valid.valid) {
+    return;
+  }
   loading.value = true;
-  console.log("submitted", e);
   const body: any = {
     name: name.value,
     email: emailAddress.value,
     text: text.value,
   };
-  // e.preventDefault();
   fetch("/contact-form", {
     method: "post",
     headers: {
@@ -98,7 +87,6 @@ function submit(e) {
     body,
   })
     .then((res) => {
-      console.log("form sumbitted", res);
       loading.value = true;
       if (res.status === 200) {
         navigateTo("/thanks");
