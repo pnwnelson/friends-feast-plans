@@ -49,13 +49,16 @@
         </template> -->
         <v-list>
           <v-list-item>
-            <v-btn @click="handleLogout">Logout</v-btn>
+            <v-btn variant="plain" @click="handleLogout">Logout</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn :to="'/about'"> About </v-btn>
+            <v-btn variant="plain" :to="'/faqs'">FAQs</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn :to="'/faqs'"> FAQs </v-btn>
+            <v-btn variant="plain" :to="'/contact'">Contact</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn variant="plain" :to="'/about'">About</v-btn>
           </v-list-item>
         </v-list>
       </v-menu>
