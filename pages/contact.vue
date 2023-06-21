@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <form
+        <!-- <form
           name="contact"
           method="POST"
           action="/thanks"
@@ -28,8 +28,8 @@
           <p hidden>
             <label><input name="bot-field" /></label>
           </p>
-        </form>
-        <!-- <v-form
+        </form> -->
+        <v-form
           name="ffp-contact-form"
           method="post"
           action="/contact-form"
@@ -67,7 +67,7 @@
           <p hidden>
             <label><input name="bot-field" /></label>
           </p>
-        </v-form> -->
+        </v-form>
       </v-col>
     </v-row>
   </v-container>
@@ -79,8 +79,32 @@ const text = ref(null);
 const loading = ref(false);
 
 function submit(e) {
+  loading.value = true;
   console.log("submitted", e);
-  e.preventDefault();
+  const body: any = {
+    name,
+    emailAddress,
+    text,
+  };
+  // e.preventDefault();
+  fetch("/contact-form", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body,
+  })
+    .then((res) => {
+      console.log("form sumbitted", res);
+      loading.value = true;
+      if (res.status === 200) {
+        navigateTo("/thanks");
+      }
+    })
+    .catch((error) => {
+      loading.value = true;
+      console.error(error);
+    });
 }
 </script>
 
