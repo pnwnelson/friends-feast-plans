@@ -39,12 +39,14 @@
         >
           <v-text-field
             v-model="name"
+            name="name"
             label="Name"
             persistent-placeholder
             density="compact"
           ></v-text-field>
           <v-text-field
             v-model="emailAddress"
+            name="email"
             type="email"
             label="Email Address"
             persistent-placeholder
@@ -52,6 +54,7 @@
           ></v-text-field>
           <v-textarea
             v-model="text"
+            name="text"
             label="Talk to us"
             persistent-placeholder
           ></v-textarea>
@@ -82,9 +85,9 @@ function submit(e) {
   loading.value = true;
   console.log("submitted", e);
   const body: any = {
-    name,
-    emailAddress,
-    text,
+    name: name.value,
+    email: emailAddress.value,
+    text: text.value,
   };
   // e.preventDefault();
   fetch("/contact-form", {
