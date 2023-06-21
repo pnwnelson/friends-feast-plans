@@ -7,7 +7,29 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-form
+        <form
+          name="contact"
+          method="POST"
+          action="/thanks"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          @submit="submit($event)"
+        >
+          <input v-model="name" type="text" name="name" class="border" />
+          <input
+            v-model="emailAddress"
+            type="email"
+            name="email"
+            class="border"
+          />
+          <input v-model="text" type="textarea" name="text" class="border" />
+          <input type="submit" />
+          <input value="contact" name="form-name" type="hidden" />
+          <p hidden>
+            <label><input name="bot-field" /></label>
+          </p>
+        </form>
+        <!-- <v-form
           name="ffp-contact-form"
           method="post"
           action="/contact-form"
@@ -45,7 +67,7 @@
           <p hidden>
             <label><input name="bot-field" /></label>
           </p>
-        </v-form>
+        </v-form> -->
       </v-col>
     </v-row>
   </v-container>
@@ -61,3 +83,9 @@ function submit(e) {
   e.preventDefault();
 }
 </script>
+
+<style>
+.border {
+  border: 1px solid black;
+}
+</style>
