@@ -6,6 +6,11 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-btn class="ma-2" variant="text" @click="backToHome">
+        <v-icon start icon="mdi-arrow-left"></v-icon>Site List
+      </v-btn>
+    </v-row>
+    <v-row>
       <v-col>
         <v-form
           ref="contactForm"
@@ -67,6 +72,10 @@ const loading = ref(false);
 const contactForm = ref(null);
 
 const rules = [(v) => !!v || "Field is required"];
+
+function backToHome() {
+  navigateTo("/");
+}
 
 async function submit(e) {
   const valid = await contactForm.value.validate();
