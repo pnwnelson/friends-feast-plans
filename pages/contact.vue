@@ -1,14 +1,14 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
-        <h2>Contact</h2>
-      </v-col>
-    </v-row>
-    <v-row>
       <v-btn class="ma-2" variant="text" @click="backToHome">
         <v-icon start icon="mdi-arrow-left"></v-icon>Site List
       </v-btn>
+    </v-row>
+    <v-row>
+      <v-col>
+        <h2>Contact</h2>
+      </v-col>
     </v-row>
     <v-row>
       <v-col>
