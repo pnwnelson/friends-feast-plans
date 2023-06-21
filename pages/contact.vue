@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <h2>Contact</h2>
+        <h2>Contact Us</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -41,7 +41,7 @@
           <v-textarea
             v-model="text"
             name="text"
-            label="Talk to us"
+            label="Talk. Lay it on us. Spit it out."
             persistent-placeholder
             :rules="rules"
           ></v-textarea>
