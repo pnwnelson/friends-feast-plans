@@ -8,9 +8,9 @@
     <v-row>
       <v-col>
         <v-form
-          name="FFP Contact Form"
+          name="ffp-contact-form"
           method="post"
-          action="/thanks"
+          action="/contact-form"
           data-netlify="true"
           data-netlify-honeypot="bot-field"
           @submit="submit($event)"
@@ -23,6 +23,7 @@
           ></v-text-field>
           <v-text-field
             v-model="emailAddress"
+            type="email"
             label="Email Address"
             persistent-placeholder
             density="compact"
@@ -40,7 +41,7 @@
               model-value="20"
             ></v-progress-circular>
           </v-btn>
-          <input value="FFP Contact Form" name="form-name" type="hidden" />
+          <input value="ffp-contact-form" name="form-name" type="hidden" />
           <p hidden>
             <label><input name="bot-field" /></label>
           </p>
