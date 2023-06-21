@@ -42,7 +42,7 @@
           </v-btn>
           <input value="FFP Contact Form" name="form-name" type="hidden" />
           <p hidden>
-            <label>Don’t fill this out: <input name="bot-field" /></label>
+            <label><input name="bot-field" /></label>
           </p>
         </v-form>
       </v-col>
@@ -56,6 +56,7 @@ const text = ref(null);
 const loading = ref(false);
 
 function submit(e) {
+  console.log("submitted", e);
   e.preventDefault();
 }
 </script>
