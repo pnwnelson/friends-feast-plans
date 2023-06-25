@@ -1,88 +1,50 @@
 <template>
   <v-container>
     <v-row>
+      <v-btn class="ma-2" variant="text" @click="backToHome">
+        <v-icon start icon="mdi-arrow-left"></v-icon>Site List
+      </v-btn>
+    </v-row>
+    <v-row>
       <v-col>
-        <h2>About This Site</h2>
+        <h2>About This App</h2>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
         <p class="mb-2">Greetings!</p>
-        <p class="mb-2">
-          This site was the result of the desire to quickly know where the
+        <p class="mb-4">
+          This site was created out of the desire to quickly know where the
           different age groups of people (preteens, teens, young adults, etc)
           might be planning to attend the Feast of Tabernacles each year with
-          the Churches of God- those which broke off from the Worldwide Church
-          of God.
+          the Churches of God (those which broke off from the Worldwide Church
+          of God). We hope you find this site useful in getting together will
+          similar age groups for the Feast of Tabernacles.
         </p>
-        <p class="mb-2 text-caption">
-          **This site is not affliated with any particular Church of God
+        <v-alert
+          class="mb-4"
+          title="Hebrews 10:24-25"
+          text="And let us consider one another in order to stir up love and good
+          works, not forsaking the assembling of ourselves together, as is
+          the manner of some, but exhorting one another, and so much the more as
+          you see the Day approaching."
+          variant="outlined"
+        ></v-alert>
+        <p class="mb-2">
+          Please use the <nuxt-link to="/contact">contact form</nuxt-link> to
+          let us know of any issues with this app.
+        </p>
+        <p class="text-caption">
+          ** This site is not affliated with any particular Church of God
           organization.
         </p>
-        <!-- <p>Please use the contact form below for any questions.</p> -->
       </v-col>
     </v-row>
-    <!-- <v-row>
-      <v-col>
-        <form
-          name="contact"
-          method="post"
-          data-netlify="true"
-          data-netlify-honeypot="bot-field"
-        >
-          <input type="hidden" name="form-name" value="contact" />
-          <p hidden>
-            <label>Don’t fill this out: <input name="bot-field" /></label>
-          </p>
-          <v-text-field
-            v-model="name"
-            :rules="rules"
-            label="Name"
-            required
-            persistent-placeholder
-          ></v-text-field>
-          <v-text-field
-            v-model="email"
-            :rules="emailRule"
-            :counter="10"
-            label="Email"
-            required
-            persistent-placeholder
-          ></v-text-field>
-          <v-textarea
-            v-model="body"
-            label="How can we help?"
-            :rules="rules"
-            required
-            persistent-placeholder
-          ></v-textarea>
-          <v-btn type="submit" block class="mt-2 mb-4 bg-indigo-lighten-2">
-            <span v-if="!loading">Submit</span>
-            <v-progress-circular
-              v-if="loading"
-              indeterminate
-              model-value="20"
-            ></v-progress-circular>
-          </v-btn>
-        </form>
-      </v-col>
-    </v-row> -->
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, ComputedRef } from "vue";
-
-const name = ref(null);
-const email = ref(null);
-const body = ref(null);
-
-const rules = [(v) => !!v || "Field is required"];
-
-const emailRule = [
-  (v) =>
-    !v ||
-    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-    "E-mail must be valid",
-];
+function backToHome() {
+  navigateTo("/");
+}
 </script>
