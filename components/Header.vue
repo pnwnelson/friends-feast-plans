@@ -32,8 +32,9 @@
     >
       Login
     </v-btn>
-    <v-col v-if="store.isAuthenticated" cols="auto">
+    <v-col cols="auto">
       <v-btn
+        v-if="store.isAuthenticated"
         icon="mdi-account"
         color="primary"
         class="mr-2"
@@ -48,7 +49,7 @@
           <v-btn icon="mdi-account" size="large" v-bind="props"> </v-btn>
         </template> -->
         <v-list>
-          <v-list-item>
+          <v-list-item v-if="store.isAuthenticated">
             <v-btn variant="plain" :to="'/faqs'">FAQs</v-btn>
           </v-list-item>
           <v-list-item>
@@ -57,7 +58,7 @@
           <v-list-item>
             <v-btn variant="plain" :to="'/about'">About</v-btn>
           </v-list-item>
-          <v-list-item>
+          <v-list-item v-if="store.isAuthenticated">
             <v-btn variant="plain" @click="handleLogout">Logout</v-btn>
           </v-list-item>
         </v-list>
