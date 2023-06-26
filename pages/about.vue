@@ -32,9 +32,9 @@
         </p>
         <p class="mb-2">
           We curated the list of sites from
-          <a href="http://www.feastgoer.org/" target="bob_dole">Feastgoers</a>
-          and various Church of God organization websites. However, this site is
-          not affliated with Feastgoers or any particular Church of God
+          <a href="http://www.feastgoer.org/" target="bob_dole">Feastgoers</a>,
+          various Church of God organization websites and YOU! However, this
+          site is not affliated with Feastgoers or any particular Church of God
           organization.
         </p>
         <p class="mb-2">
