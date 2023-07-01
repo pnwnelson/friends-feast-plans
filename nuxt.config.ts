@@ -14,6 +14,50 @@ export default defineNuxtConfig({
       FB_MEASUREMENT_ID: process.env.FB_MEASUREMENT_ID,
     },
   },
+  app: {
+    head: {
+      title: "Friends' Feast Plans",
+      meta: [
+        {
+          name: "description",
+          content:
+            "Quickly find out where the different age groups will be attending the Feast of Tabernacles",
+        },
+        {
+          property: "og:title",
+          content: "Friends' Feast Plans",
+        },
+        {
+          name: "og:description",
+          content:
+            "Quickly find out where the different age groups will be attending the Feast of Tabernacles",
+        },
+        {
+          property: "og:image",
+          content:
+            "https://friendsfeastplans.org/images/FFP_Tent_LOGO_720x440.png",
+        },
+        {
+          property: "twitter:title",
+          content: "Friends' Feast Plans",
+        },
+        {
+          property: "twitter:description",
+          content:
+            "Quickly find out where the different age groups will be attending the Feast of Tabernacles",
+        },
+        {
+          property: "twitter:image",
+          content:
+            "https://friendsfeastplans.org/images/FFP_Tent_LOGO_720x440.png",
+        },
+        {
+          property: "twitter:url",
+          content: "https://friendsfeastplans.org",
+        },
+      ],
+    },
+  },
   modules: [
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
