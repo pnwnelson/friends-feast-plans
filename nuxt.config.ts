@@ -24,11 +24,19 @@ export default defineNuxtConfig({
             "Quickly find out where the different age groups will be attending the Feast of Tabernacles",
         },
         {
+          property: "og:type",
+          content: "website",
+        },
+        {
+          property: "og:url",
+          content: "https://friendsfeastplans.org",
+        },
+        {
           property: "og:title",
           content: "Friends' Feast Plans",
         },
         {
-          name: "og:description",
+          property: "og:description",
           content:
             "Quickly find out where the different age groups will be attending the Feast of Tabernacles",
         },
@@ -38,22 +46,26 @@ export default defineNuxtConfig({
             "https://friendsfeastplans.org/images/FFP_Tent_LOGO_720x440.png",
         },
         {
-          property: "twitter:title",
+          name: "twitter:title",
           content: "Friends' Feast Plans",
         },
         {
-          property: "twitter:description",
+          name: "twitter:description",
           content:
             "Quickly find out where the different age groups will be attending the Feast of Tabernacles",
         },
         {
-          property: "twitter:image",
+          name: "twitter:image",
           content:
             "https://friendsfeastplans.org/images/FFP_Tent_LOGO_720x440.png",
         },
         {
           property: "twitter:url",
           content: "https://friendsfeastplans.org",
+        },
+        {
+          property: "twitter:domain",
+          content: "friendsfeastplans.org",
         },
       ],
     },
